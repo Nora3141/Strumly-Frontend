@@ -3,11 +3,13 @@ import { useUserStore } from "@/stores/user";
 import { formatDate } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
 import { fetchy } from "../../utils/fetchy";
+import { onBeforeMount, ref } from "vue";
 import FavoriteComponent from "@/components/Post/FavoriteComponent.vue";
 
 const props = defineProps(["post"]);
 const emit = defineEmits(["editPost", "refreshPosts"]);
 const { currentUsername } = storeToRefs(useUserStore());
+let numFavorites = ref(0);
 
 const deletePost = async () => {
   try {
@@ -17,6 +19,18 @@ const deletePost = async () => {
   }
   emit("refreshPosts");
 };
+
+const getFavoritesOnPost = async () => {
+  try {
+    numFavorites.value = (await fetchy(`/api/favoriting/favoriteCount/${props.post._id}`, "GET")).result;
+  } catch (error) {
+    console.log("An error occurred fetching the number of favorites on a post: ", error);
+  }
+};
+
+onBeforeMount(async () => {
+  await getFavoritesOnPost();
+});
 </script>
 
 <template>
@@ -26,9 +40,10 @@ const deletePost = async () => {
     <iframe :src="props.post.videoURL" width="600" height="400"></iframe>
     <p>Description: {{ props.post.videoDescription }}</p>
     <p v-if="props.post.originalArtist !== null">Original Artist: {{ props.post.originalArtist }}</p>
+    <p class="author">Num favorites:{{ numFavorites }}</p>
   </article>
   <div class="base">
-    <FavoriteComponent :post="post" />
+    <FavoriteComponent :post="post" @refreshFavCount="getFavoritesOnPost" />
     <menu v-if="props.post.author == currentUsername">
       <!-- <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li> -->
       <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>

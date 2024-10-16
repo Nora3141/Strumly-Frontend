@@ -2,6 +2,7 @@
 import { onBeforeMount, ref } from "vue";
 import { fetchy } from "@/utils/fetchy";
 const props = defineProps(["post"]);
+const emit = defineEmits(["refreshFavCount"]);
 
 let favorited = ref(false);
 
@@ -12,6 +13,7 @@ const toggleFavorite = async () => {
     return;
   }
   favorited.value = !favorited.value;
+  emit("refreshFavCount");
 };
 
 const setFavoritedStatus = async () => {

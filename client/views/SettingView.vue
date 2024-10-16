@@ -25,6 +25,7 @@ async function delete_() {
     <h2>{{ currentUsername.toUpperCase() }}</h2>
     <h2>MY POSTS:</h2>
     <ProfilePostListComponent />
+    <h2>MY FAVORITED POSTS:</h2>
     <button class="pure-button pure-button-primary" @click="logout">Logout</button>
     <button class="button-error pure-button" @click="delete_">Delete User</button>
     <UpdateUserForm />

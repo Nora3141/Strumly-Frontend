@@ -9,13 +9,15 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 <template>
   <main>
     <h1>Feed</h1>
+    <p>(Gives you a random post when you press +)</p>
     <FeedComponent />
   </main>
 </template>
 
 <style scoped>
 h1,
-h2 {
+h2,
+p {
   text-align: center;
 }
 </style>

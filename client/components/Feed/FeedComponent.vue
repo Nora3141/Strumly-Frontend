@@ -55,7 +55,6 @@ article {
   justify-items: center;
   justify-content: center;
   align-items: center;
-  background-color: lightblue;
   padding: 5px;
 }
 .nextPostButton {

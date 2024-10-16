@@ -36,8 +36,8 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <button type="button" @click="toggleFavorite" v-if="favorited == true">Unfavorite</button>
-  <button type="button" @click="toggleFavorite" v-else>Favorite</button>
+  <button type="button" @click="toggleFavorite" v-if="favorited == true"><img src="@/assets/images/favorited-star.png" /></button>
+  <button type="button" @click="toggleFavorite" v-else><img src="@/assets/images/unfavorited-star.png" /></button>
 </template>
 
 <style scoped></style>

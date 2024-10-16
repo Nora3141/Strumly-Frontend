@@ -7,6 +7,7 @@ export const useUserStore = defineStore(
   "user",
   () => {
     const currentUsername = ref("");
+    const currentUserID = ref("");
 
     const isLoggedIn = computed(() => currentUsername.value !== "");
 
@@ -28,10 +29,14 @@ export const useUserStore = defineStore(
 
     const updateSession = async () => {
       try {
-        const { username } = await fetchy("/api/session", "GET", { alert: false });
+        const result = await fetchy("/api/session", "GET", { alert: false });
+        const username = result.userDoc.username;
+        const userID = result.userID;
         currentUsername.value = username;
+        currentUserID.value = userID;
       } catch {
         currentUsername.value = "";
+        currentUserID.value = "";
       }
     };
 
@@ -55,6 +60,7 @@ export const useUserStore = defineStore(
 
     return {
       currentUsername,
+      currentUserID,
       isLoggedIn,
       createUser,
       loginUser,

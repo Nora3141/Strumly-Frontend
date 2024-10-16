@@ -62,13 +62,9 @@ export default class PostingConcept {
   }
 
   async getByID(postIDs: ObjectId[]) {
-    const result: PostDoc[] = [];
-    for (let i = 0; i < postIDs.length; i++) {
-      const post = await this.posts.readOne({ _id: postIDs[i] });
-      if (post == null) {
-        throw new Error("Post ID not found.");
-      }
-      result.push(post);
+    const result = await this.posts.readMany({ _id: { $in: postIDs } });
+    if (result.length !== postIDs.length) {
+      throw new Error("One or more Post IDs not found.");
     }
     return result;
   }

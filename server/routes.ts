@@ -18,7 +18,8 @@ class Routes {
   @Router.get("/session")
   async getSessionUser(session: SessionDoc) {
     const user = Sessioning.getUser(session);
-    return await Authing.getUserById(user);
+    const userDoc = await Authing.getUserById(user);
+    return { userDoc: userDoc, userID: String(user) };
   }
 
   @Router.get("/users")
@@ -167,10 +168,13 @@ class Routes {
    */
   @Router.get("/favoriting/getFavorites/:userID")
   async getFavoritesByUser(userID: string) {
+    console.log("in router getting favorites for user id: " + userID);
     const actualID = new ObjectId(userID);
     const favoritedIDs = await Favoriting.getFavoritedByUser(actualID);
+    console.log("found favorited ids: ", favoritedIDs);
     const result = await Posting.getByID(favoritedIDs);
-    return result;
+    console.log("result: ", result);
+    return Responses.posts(result);
   }
 
   /**

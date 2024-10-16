@@ -19,8 +19,13 @@ const deletePost = async () => {
 </script>
 
 <template>
-  <p class="author">{{ props.post.author }}</p>
-  <p>{{ props.post.content }}</p>
+  <article class="content">
+    <p class="author">{{ props.post.videoTitle }}</p>
+    <p class="author">by {{ props.post.author }}</p>
+    <iframe :src="props.post.videoURL" width="600" height="400"></iframe>
+    <p>Description: {{ props.post.videoDescription }}</p>
+    <p v-if="props.post.originalArtist !== null">Original Artist: {{ props.post.originalArtist }}</p>
+  </article>
   <div class="base">
     <menu v-if="props.post.author == currentUsername">
       <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li>
@@ -67,5 +72,14 @@ menu {
 
 .base article:only-child {
   margin-left: auto;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
 }
 </style>

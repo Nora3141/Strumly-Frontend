@@ -11,7 +11,7 @@ const emit = defineEmits(["refreshPosts"]);
 
 // Helper function to format Google Drive URLs (created using ChatGPT)
 const formatGoogleDriveURLForIframe = (url: string): string => {
-  const googleDriveFileRegex = /https:\/\/drive\.google\.com\/file\/d\/([^\/]+)\//;
+  const googleDriveFileRegex = /https:\/\/drive\.google\.com\/file\/d\/([^/]+)\//;
   const googleDriveOpenRegex = /https:\/\/drive\.google\.com\/open\?id=([^&]+)/;
 
   let fileId: string | null = null;

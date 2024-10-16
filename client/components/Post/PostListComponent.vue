@@ -7,6 +7,7 @@ import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
 import SearchPostForm from "./SearchPostForm.vue";
+import TitleSearchPostsForm from "./TitleSearchPostsForm.vue";
 
 const { isLoggedIn } = storeToRefs(useUserStore());
 
@@ -23,7 +24,20 @@ async function getPosts(author?: string) {
   } catch (_) {
     return;
   }
-  searchAuthor.value = author ? author : "";
+  searchAuthor.value = author ? "By: " + author : "";
+  posts.value = postResults;
+}
+
+async function getPostsByTitle(title?: string) {
+  let query: Record<string, string> = title !== undefined ? { title } : {};
+  let postResults;
+  try {
+    postResults = await fetchy(`/api/posts/${title}`, "GET", { query });
+  } catch (error) {
+    console.log("An error ocurred searching posts by title: ", error);
+    return;
+  }
+  searchAuthor.value = title ? "With Title: " + title : "";
   posts.value = postResults;
 }
 
@@ -44,8 +58,9 @@ onBeforeMount(async () => {
   </section>
   <div class="row">
     <h2 v-if="!searchAuthor">Posts:</h2>
-    <h2 v-else>Posts by {{ searchAuthor }}:</h2>
+    <h2 v-else>Posts {{ searchAuthor }}:</h2>
     <SearchPostForm @getPostsByAuthor="getPosts" />
+    <TitleSearchPostsForm @getPostsByTitle="getPostsByTitle" />
   </div>
   <section class="posts" v-if="loaded && posts.length !== 0">
     <article v-for="post in posts" :key="post._id">
@@ -78,10 +93,14 @@ article {
   flex-direction: column;
   gap: 0.5em;
   padding: 1em;
+  width: fit-content;
 }
 
 .posts {
   padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .row {

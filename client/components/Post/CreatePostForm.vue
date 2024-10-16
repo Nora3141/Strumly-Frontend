@@ -68,7 +68,7 @@ const emptyForm = () => {
     <label for="videoDescription">Video Description</label>
     <textarea id="videoDescription" v-model="videoDescription" placeholder="How I made this, learning resources" required> </textarea>
     <label for="originalArtist">Original Artist</label>
-    <textarea id="originalArtist" v-model="originalArtist" placeholder="Credit the original artist of song here" required> </textarea>
+    <textarea id="originalArtist" v-model="originalArtist" placeholder="Credit the original artist of song here"> </textarea>
     <button type="submit" class="pure-button-primary pure-button">Create Post</button>
   </form>
 </template>

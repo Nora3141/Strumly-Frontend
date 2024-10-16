@@ -3,6 +3,7 @@ import { useUserStore } from "@/stores/user";
 import { formatDate } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
 import { fetchy } from "../../utils/fetchy";
+import FavoriteComponent from "@/components/Post/FavoriteComponent.vue";
 
 const props = defineProps(["post"]);
 const emit = defineEmits(["editPost", "refreshPosts"]);
@@ -27,6 +28,7 @@ const deletePost = async () => {
     <p v-if="props.post.originalArtist !== null">Original Artist: {{ props.post.originalArtist }}</p>
   </article>
   <div class="base">
+    <FavoriteComponent :post="post" />
     <menu v-if="props.post.author == currentUsername">
       <!-- <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li> -->
       <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>

@@ -37,51 +37,35 @@ onBeforeMount(async () => {
     </section>
     <p v-else-if="loaded">No posts found</p>
     <p v-else>Loading...</p>
-    <button @click="getRandomPost">+</button>
+    <button class="nextPostButton" @click="getRandomPost">+</button>
   </div>
 </template>
 
 <style scoped>
-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-}
-
-section,
-p,
-.row {
-  margin: 0 auto;
-  max-width: 60em;
-}
-
 article {
   background-color: var(--base-bg);
   border-radius: 1em;
-  display: flex;
-  flex-direction: column;
   gap: 0.5em;
   padding: 1em;
   width: fit-content;
 }
-
-.posts {
-  padding: 1em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 auto;
-  max-width: 60em;
-}
-
 .feedBlock {
   display: flex;
   flex-direction: row;
   justify-items: center;
+  justify-content: center;
+  align-items: center;
+  background-color: lightblue;
+  padding: 5px;
+}
+.nextPostButton {
+  border-radius: 100%;
+  margin: 5px;
+}
+
+.posts {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
 }
 </style>

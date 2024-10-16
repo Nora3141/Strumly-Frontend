@@ -25,6 +25,16 @@ export default class FavoritingConcept {
     }
   }
 
+  async isFavorited(userID: ObjectId, postID: ObjectId) {
+    // check if favorited already
+    const favorite = await this.favorites.readOne({ user: userID, favoritedPost: postID });
+    if (favorite == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   async getFavoritedByUser(userID: ObjectId) {
     const favs = await this.favorites.readMany({ user: userID });
     const result: Array<ObjectId> = [];

@@ -192,6 +192,24 @@ class Routes {
   }
 
   /**
+   * Toggles the favorite on or off for some post (by the current session user)
+   *
+   * @param postID The ID of the post to favorite/unfavorite
+   * @param session The current session the user is in
+   * @returns a message about whether the user unfavorited or favorited the post
+   */
+  @Router.get("/favoriting/checkFavorited/:postID")
+  async isFavorited(postID: string, session: SessionDoc) {
+    Sessioning.isLoggedIn(session);
+    const oid = new ObjectId(postID);
+    await Posting.assertPostExists(oid);
+
+    const user = Sessioning.getUser(session);
+    const result = await Favoriting.isFavorited(user, oid);
+    return { result: result };
+  }
+
+  /**
    * @param postID The ID of some post to check the number of favorites on
    * @returns The number of favorites on the post
    */

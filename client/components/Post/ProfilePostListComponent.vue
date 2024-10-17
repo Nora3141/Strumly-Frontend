@@ -9,15 +9,18 @@ const props = defineProps(["posts", "loaded"]);
 
 let editing = ref("");
 
+/*
 async function refreshPosts() {
+  TODO: put on post component: @refreshPosts="refreshPosts"
   await getPosts(currentUsername.value);
 }
+  */
 </script>
 
 <template>
   <section class="posts" v-if="loaded && posts.length !== 0">
     <article v-for="post in props.posts" :key="post._id">
-      <PostComponent v-if="editing !== post._id" :post="post" @refreshPosts="refreshPosts" @editPost="updateEditing" />
+      <PostComponent v-if="editing !== post._id" :post="post" />
     </article>
   </section>
   <p v-else-if="props.loaded">No posts found</p>

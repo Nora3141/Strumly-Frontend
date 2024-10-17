@@ -32,7 +32,7 @@ onBeforeMount(async () => {
   <div class="feedBlock">
     <section class="posts" v-if="loaded && posts.length !== 0">
       <article v-for="post in posts" :key="post._id">
-        <PostComponent v-if="editing !== post._id" :post="post" @refreshPosts="getRandomPost" @editPost="updateEditing" />
+        <PostComponent :post="post" @refreshPosts="getRandomPost" />
       </article>
     </section>
     <p v-else-if="loaded">No posts found</p>

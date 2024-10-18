@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
 import { fetchy } from "@/utils/fetchy";
+import { onBeforeMount, ref } from "vue";
 const props = defineProps(["post"]);
 const emit = defineEmits(["refreshFavCount"]);
 
@@ -17,14 +17,12 @@ const toggleFavorite = async () => {
 };
 
 const setFavoritedStatus = async () => {
-  console.log("setting initial favorited status...");
   try {
     favorited.value = (await fetchy(`/api/favoriting/checkFavorited/${props.post._id}`, "GET")).result;
   } catch (error) {
     console.log("an error occurred setting the initial favorited status: ", error);
     return;
   }
-  console.log("initial favorited status set successfully", favorited.value);
 };
 
 onBeforeMount(async () => {

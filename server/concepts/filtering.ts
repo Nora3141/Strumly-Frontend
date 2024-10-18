@@ -40,7 +40,7 @@ export default class FilteringConcept {
     if (tagNameIdx == -1) throw new Error("This tag does not exist on this post.");
     if (!filter || !filter.tags.includes(tagNameIdx)) throw new Error("This tag does not exist on this post.");
     else {
-      const newArray = filter.tags.filter((e, i) => e !== tagNameIdx);
+      const newArray = filter.tags.filter((e) => e !== tagNameIdx);
       const _id = filter._id;
       await this.filters.partialUpdateOne({ _id }, { postID: postID, tags: newArray });
     }
@@ -56,6 +56,7 @@ export default class FilteringConcept {
   }
 
   async getPostsByTags(tagNames: string) {
+    console.log("getPostsByTags called in filtering on tagNames: ", tagNames);
     const tags = tagNames.replace(/\s+/g, "").split(",");
     let filtered = await this.filters.readMany({});
     for (let i = 0; i < tags.length; i++) {

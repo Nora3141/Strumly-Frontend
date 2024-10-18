@@ -9,17 +9,40 @@ const { isLoggedIn } = storeToRefs(useUserStore());
 
 const loaded = ref(false);
 let posts = ref<Array<Record<string, string>>>([]);
+let tagsActivationStatus = ref<boolean[]>([false, false, false]);
+let ALL_TAGS = ["tag1", "tag2", "tag3"];
+let includedTags = ref<string[]>([]);
 
 async function getRandomPost() {
-  let query: Record<string, string> = {}; // todo: put filters here later
+  const filters = includedTags.value.join(",");
+  let query: Record<string, string> = {}; // Initialize as an empty object
+
+  // Only add tagNames to the query if filters is not empty
+  if (filters) {
+    query.tagNames = filters; // Set tagNames only if filters are defined
+  }
+
   let postResults;
   try {
+    // postResults = await fetchy("/api/filtering/getRandomPostFiltered", "GET", { query }); // Pass query object
     postResults = await fetchy("/api/filtering/getRandomPostFiltered", "GET", { query });
   } catch (error) {
     console.log("An error occurred fetching a random post for the feed: ", error);
     return;
   }
   posts.value = postResults;
+}
+
+function clickTagButton(idx: number) {
+  tagsActivationStatus.value[idx] = !tagsActivationStatus.value[idx];
+  const tagName = ALL_TAGS[idx];
+  if (tagsActivationStatus.value[idx] && !includedTags.value.includes(tagName)) {
+    // just turned on, add to the current filters
+    includedTags.value.push(tagName);
+  } else if (!tagsActivationStatus.value[idx] && includedTags.value.includes(tagName)) {
+    // just turned off, need to remove
+    includedTags.value = includedTags.value.filter((tag) => tag !== tagName);
+  }
 }
 
 onBeforeMount(async () => {
@@ -29,6 +52,12 @@ onBeforeMount(async () => {
 </script>
 
 <template>
+  <h3>Filter by tags:</h3>
+  <div class="tagButtons">
+    <button :class="tagsActivationStatus[0] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(0)">Tag 1</button>
+    <button :class="tagsActivationStatus[1] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(1)">Tag 2</button>
+    <button :class="tagsActivationStatus[2] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(2)">Tag 3</button>
+  </div>
   <div class="feedBlock">
     <section class="posts" v-if="loaded && posts.length !== 0">
       <article v-for="post in posts" :key="post._id">
@@ -66,5 +95,29 @@ article {
   width: fit-content;
   display: flex;
   flex-direction: column;
+}
+
+h3 {
+  text-align: center;
+}
+
+.tagButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.tagButtonUnpressed {
+  background-color: lightyellow;
+  padding: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.tagButtonPressed {
+  background-color: gray;
+  padding: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 </style>

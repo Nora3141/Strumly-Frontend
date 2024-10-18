@@ -4,7 +4,7 @@ import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
-import UpdateUserForm from "../components/Setting/UpdateUserForm.vue";
+import ProfilePostListComponent from "../components/Post/ProfilePostListComponent.vue";
 
 const { currentUsername, currentUserID } = storeToRefs(useUserStore());
 const { logoutUser, deleteUser } = useUserStore();
@@ -56,9 +56,11 @@ onBeforeMount(async () => {
 
 <template>
   <main class="column">
-    <h1>User Settings</h1>
-    <button class="pure-button pure-button-primary" @click="logout">Logout</button>
-    <button class="button-error pure-button" @click="delete_">Delete User</button>
-    <UpdateUserForm />
+    <h1>Profile</h1>
+    <h2>{{ currentUsername.toUpperCase() }}</h2>
+    <h2>MY POSTS:</h2>
+    <ProfilePostListComponent :posts="myPosts" :loaded="loaded" />
+    <h2>MY FAVORITED POSTS:</h2>
+    <ProfilePostListComponent :posts="favoritedPosts" :loaded="loaded" />
   </main>
 </template>

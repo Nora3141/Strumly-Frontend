@@ -300,6 +300,7 @@ class Routes {
    */
   @Router.get("/filtering/getRandomPostFiltered")
   async getRandomPostFiltered(tagNames: string) {
+    console.log("===== getRandomPostsFiltered called on: ", tagNames);
     let allPosts = [];
     if (tagNames == null) {
       allPosts = await Posting.getPosts();
@@ -310,6 +311,7 @@ class Routes {
       }
       allPosts = await Posting.getByID(allPostIDs);
     }
+    console.log("got all posts: ", allPosts);
     const randomIdx = Math.floor(Math.random() * allPosts.length);
     return Responses.posts([allPosts[randomIdx]]);
   }
@@ -379,18 +381,14 @@ class Routes {
    */
   @Router.get("/remixing/getTrendingRemixed/:numPosts")
   async getTrendingRemixed(numPosts: number) {
-    console.log("getting trending remixed posts...");
     // returns "numPosts" number of recent posts that are getting the most remixes
     const WITHIN_NUM_DAYS = 3;
     const recent_posts = await Posting.getRecentPosts(WITHIN_NUM_DAYS);
-    console.log("got recent posts");
     const oids = [];
     for (let i = 0; i < recent_posts.length; i++) {
       oids.push(recent_posts[i]._id);
     }
-    console.log("getting remixes on posts...");
     const result = await Remixing.getMostRemixed(oids, numPosts);
-    console.log("done!");
 
     if (!result) throw new Error("Could not get remixes for found trending remixed posts.");
     const resultAsPosts = await Posting.getByID(result);

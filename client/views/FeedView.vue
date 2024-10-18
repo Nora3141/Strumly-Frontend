@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import FeedComponent from "@/components/Feed/FeedComponent.vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
-import FeedComponent from "@/components/Feed/FeedComponent.vue";
 
 const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 </script>
@@ -10,6 +10,7 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
   <main>
     <h1>Feed</h1>
     <p>(Gives you a random post when you press +)</p>
+
     <FeedComponent />
   </main>
 </template>
@@ -17,6 +18,7 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 <style scoped>
 h1,
 h2,
+h3,
 p {
   text-align: center;
 }

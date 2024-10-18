@@ -1,4 +1,6 @@
 /* Add some global styles here! */
+@import url("https://fonts.googleapis.com/css2?family=McLaren&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Khula:wght@300;400;600;700;800&family=McLaren&display=swap");
 
 :root {
   --red: rgb(208, 67, 12);
@@ -29,4 +31,68 @@ a.button {
   justify-content: center;
   align-items: center;
   gap: 1em;
+}
+
+.mclaren-regular {
+  font-family: "McLaren", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.khula-light {
+  font-family: "Khula", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.khula-regular {
+  font-family: "Khula", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.khula-semibold {
+  font-family: "Khula", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.khula-bold {
+  font-family: "Khula", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.khula-extrabold {
+  font-family: "Khula", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.pageHeader {
+  font-family: "McLaren", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: white;
+  background-color: #ef8d8d;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: fit-content;
+  border-radius: 10px;
+  border: 1px black solid;
+  font-size: 24px;
+}
+
+.background-blank {
+  background-color: #f5f5f5;
+}
+
+.blue {
+  color: #216bff;
+}
+
+.orange-background {
+  background-color: #f4bc73;
 }

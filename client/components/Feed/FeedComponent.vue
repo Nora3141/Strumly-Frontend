@@ -6,6 +6,7 @@ import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
 
 const { isLoggedIn } = storeToRefs(useUserStore());
+const props = defineProps(["specificPostID"]);
 
 const loaded = ref(false);
 let posts = ref<Array<Record<string, string>>>([]);
@@ -24,10 +25,22 @@ async function getRandomPost() {
 
   let postResults;
   try {
-    // postResults = await fetchy("/api/filtering/getRandomPostFiltered", "GET", { query }); // Pass query object
+    // postResults = await fetchy("/api/filtering/getRandomPostFiltered", "GET", { query }); // pass query object
     postResults = await fetchy("/api/filtering/getRandomPostFiltered", "GET", { query });
   } catch (error) {
     console.log("An error occurred fetching a random post for the feed: ", error);
+    return;
+  }
+  posts.value = postResults;
+}
+
+async function getSpecificPost(id: string) {
+  let postResults;
+  try {
+    let query: Record<string, string> = {};
+    postResults = await fetchy(`/api/posts/getByID/${id}`, "GET", { query });
+  } catch (error) {
+    console.log("An error occurred fetching a specific post for the feed: ", error);
     return;
   }
   posts.value = postResults;
@@ -46,7 +59,11 @@ function clickTagButton(idx: number) {
 }
 
 onBeforeMount(async () => {
-  await getRandomPost();
+  if (props.specificPostID == "") {
+    await getRandomPost();
+  } else {
+    await getSpecificPost(props.specificPostID);
+  }
   loaded.value = true;
 });
 </script>

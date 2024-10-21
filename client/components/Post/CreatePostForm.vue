@@ -9,6 +9,8 @@ const originalArtist = ref("");
 
 const emit = defineEmits(["refreshPosts"]);
 
+const props = defineProps(["originalPost"]);
+
 // Helper function to format Google Drive URLs (created using ChatGPT)
 const formatGoogleDriveURLForIframe = (url: string): string => {
   const googleDriveFileRegex = /https:\/\/drive\.google\.com\/file\/d\/([^/]+)\//;
@@ -40,9 +42,18 @@ const formatGoogleDriveURLForIframe = (url: string): string => {
 const createPost = async () => {
   const url = formatGoogleDriveURLForIframe(videoURL.value);
   try {
-    await fetchy("/api/posts", "POST", {
-      body: { videoURL: url, videoTitle: videoTitle.value, videoDescription: videoDescription.value, originalArtist: originalArtist.value },
-    });
+    if (props.originalPost === "") {
+      await fetchy("/api/posts", "POST", {
+        body: { videoURL: url, videoTitle: videoTitle.value, videoDescription: videoDescription.value, originalArtist: originalArtist.value },
+        alert: true,
+      });
+    } else {
+      console.log("in the else statement creating a remix");
+      await fetchy("/api/remixing/createRemix", "POST", {
+        body: { originalPostID: props.originalPost, videoURL: url, videoTitle: videoTitle.value, videoDescription: videoDescription.value },
+        alert: true,
+      });
+    }
   } catch (error) {
     console.log("An error occured submitting the create post form: ", error);
     return;

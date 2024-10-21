@@ -111,6 +111,13 @@ class Routes {
     return Posting.delete(oid);
   }
 
+  @Router.get("/posts/getByID/:id")
+  async getPost(id: string) {
+    const oid = new ObjectId(id);
+    const result = await Posting.getByID([oid]);
+    return Responses.posts(result);
+  }
+
   /* FRIEND ROUTES (not being used in my project)
   @Router.get("/friends")
   async getFriends(session: SessionDoc) {
@@ -340,11 +347,14 @@ class Routes {
    */
   @Router.get("/remixing/getNumRemixed/:postID")
   async getNumRemixes(postID: string) {
+    console.log("getting num remixes on post: ", postID);
     // assert postID is an existing post (using posting concept)
     const oid = new ObjectId(postID);
     await Posting.assertPostExists(oid);
     // use remixing concept to get postIDs of remixes from the request on this original postID
     const remixes = await Remixing.getRemixesOnPost(oid);
+    console.log("remixes is: ", remixes);
+    console.log("num remixes is: ", remixes.length);
     return remixes.length;
   }
 
@@ -362,6 +372,7 @@ class Routes {
   @Router.post("/remixing/createRemix")
   async createRemix(originalPostID: string, session: SessionDoc, videoURL: string, videoTitle: string, videoDescription: string, originalArtist?: string, options?: PostOptions) {
     // assert that the original post exists
+    console.log("creating a remix from post id: ", originalPostID);
     const oid = new ObjectId(originalPostID);
     await Posting.assertPostExists(oid);
     const originalPost = (await Posting.getByID([oid]))[0];

@@ -52,6 +52,11 @@ function toggleUserDropdown() {
             </RouterLink>
           </li>
           <li class="nav-item">
+            <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Create' }" :class="{ active: currentRouteName === 'Create' }">
+              <img class="navbar-icon" src="@/assets/images/plus.png" /> Create
+            </RouterLink>
+          </li>
+          <li class="nav-item">
             <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Feed' }" :class="{ active: currentRouteName === 'Feed' }">
               <img class="navbar-icon" src="@/assets/images/video.png" /> Feed
             </RouterLink>

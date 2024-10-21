@@ -1,15 +1,17 @@
 <script setup lang="ts">
+import FavoriteComponent from "@/components/Post/FavoriteComponent.vue";
+import router from "@/router";
 import { useUserStore } from "@/stores/user";
 import { formatDate } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
-import { fetchy } from "../../utils/fetchy";
 import { onBeforeMount, ref } from "vue";
-import FavoriteComponent from "@/components/Post/FavoriteComponent.vue";
+import { fetchy } from "../../utils/fetchy";
 
 const props = defineProps(["post"]);
 const emit = defineEmits(["editPost", "refreshPosts"]);
 const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 let numFavorites = ref(0);
+let numRemixes = ref(0);
 
 const deletePost = async () => {
   try {
@@ -28,8 +30,21 @@ const getFavoritesOnPost = async () => {
   }
 };
 
+const getRemixesOnPost = async () => {
+  try {
+    numRemixes.value = await fetchy(`/api/remixing/getNumRemixed/${props.post._id}`, "GET");
+  } catch (error) {
+    console.log("An error occurred fetching the number of remixes on a post: ", error);
+  }
+};
+
+function remixPost() {
+  void router.push({ name: "Create", query: { originalPost: String(props.post._id) } });
+}
+
 onBeforeMount(async () => {
   await getFavoritesOnPost();
+  await getRemixesOnPost();
 });
 </script>
 
@@ -41,9 +56,11 @@ onBeforeMount(async () => {
     <p>Description: {{ props.post.videoDescription }}</p>
     <p v-if="props.post.originalArtist !== null">Original Artist: {{ props.post.originalArtist }}</p>
     <p class="author">Num favorites:{{ numFavorites }}</p>
+    <p class="author">Num Remixes:{{ numRemixes }}</p>
   </article>
   <div class="base">
     <FavoriteComponent v-if="isLoggedIn" :post="post" @refreshFavCount="getFavoritesOnPost" />
+    <button @click="remixPost">Remix</button>
     <menu v-if="props.post.author == currentUsername">
       <!-- <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li> -->
       <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>

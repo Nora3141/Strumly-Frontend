@@ -59,8 +59,8 @@ onBeforeMount(async () => {
     <h1>Profile</h1>
     <h2>{{ currentUsername.toUpperCase() }}</h2>
     <h2>MY POSTS:</h2>
-    <ProfilePostListComponent :posts="myPosts" :loaded="loaded" />
+    <ProfilePostListComponent :posts="myPosts" :loaded="loaded" @refreshPosts="refreshPosts" />
     <h2>MY FAVORITED POSTS:</h2>
-    <ProfilePostListComponent :posts="favoritedPosts" :loaded="loaded" />
+    <ProfilePostListComponent :posts="favoritedPosts" :loaded="loaded" @refreshPosts="refreshPosts" />
   </main>
 </template>

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.js";
 import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
@@ -71,35 +74,94 @@ const emptyForm = () => {
 </script>
 
 <template>
-  <form @submit.prevent="createPost()">
-    <label for="videoURL">URL of Video</label>
-    <textarea id="videoURL" v-model="videoURL" placeholder="Paste your publically accessable google drive link here" required> </textarea>
-    <label for="videoTitle">Title of Video</label>
-    <textarea id="videoTitle" v-model="videoTitle" placeholder="My Cool Song" required> </textarea>
-    <label for="videoDescription">Video Description</label>
-    <textarea id="videoDescription" v-model="videoDescription" placeholder="How I made this, learning resources" required> </textarea>
-    <label for="originalArtist">Original Artist</label>
-    <textarea id="originalArtist" v-model="originalArtist" placeholder="Credit the original artist of song here"> </textarea>
-    <button type="submit" class="pure-button-primary pure-button">Create Post</button>
+  <form @submit.prevent="createPost()" class="p-4">
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-md-6">
+        <!-- Step 1 -->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h4>
+              <i class="bi bi-camera-video me-2"></i>
+              Record Video
+            </h4>
+            <p>Record a video of your music and upload it to Google Drive.</p>
+            <div class="d-flex align-items-center text-muted mb-2">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <p class="mb-0">Note: Make sure your link is publicly accessible!</p>
+            </div>
+            <textarea id="videoURL" v-model="videoURL" class="form-control mt-2 required-field" placeholder="Google Drive URL Here" required></textarea>
+            <small class="text-muted">This field is required.</small>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h4>
+              <i class="bi bi-pencil me-2"></i>
+              Title Your Post
+            </h4>
+            <textarea id="videoTitle" v-model="videoTitle" class="form-control mt-2 required-field" placeholder="My Cool Song" required></textarea>
+            <small class="text-muted">This field is required.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-md-6">
+        <!-- Step 3 -->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h4>
+              <i class="bi bi-file-earmark-text me-2"></i>
+              Add Description
+            </h4>
+            <textarea id="videoDescription" v-model="videoDescription" class="form-control mt-2 required-field" placeholder="How I made this, learning resources" required></textarea>
+            <small class="text-muted">This field is required.</small>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h4>
+              <i class="bi bi-person me-2"></i>
+              Credit Others
+            </h4>
+            <textarea id="originalArtist" v-model="originalArtist" class="form-control mt-2" placeholder="Original artist of song here"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Create Post</button>
   </form>
 </template>
 
 <style scoped>
-form {
-  background-color: var(--base-bg);
-  border-radius: 1em;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-  padding: 1em;
-}
-
 textarea {
   font-family: inherit;
   font-size: inherit;
   height: 6em;
-  padding: 0.5em;
-  border-radius: 4px;
   resize: none;
+}
+
+.required-field {
+  border-left: 4px solid #007bff;
+}
+
+.text-muted {
+  background-color: transparent !important;
+}
+
+.card {
+  border-radius: 1em;
+}
+
+form {
+  font-family: "Khula", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 </style>

@@ -50,17 +50,21 @@ onBeforeMount(async () => {
 
 <template>
   <article class="content">
-    <p class="author">{{ props.post.videoTitle }}</p>
-    <p class="author">by {{ props.post.author }}</p>
-    <iframe :src="props.post.videoURL" width="600" height="400"></iframe>
+    <p class="title">{{ props.post.videoTitle }}</p>
+    <div class="authorSection">
+      <img src="@/assets/images/profile-icon.png" />
+      <p class="author">{{ props.post.author }}</p>
+    </div>
+    <iframe :src="props.post.videoURL" width="750" height="500"></iframe>
     <p>Description: {{ props.post.videoDescription }}</p>
     <p v-if="props.post.originalArtist !== null">Original Artist: {{ props.post.originalArtist }}</p>
-    <p class="author">Num favorites:{{ numFavorites }}</p>
-    <p class="author">Num Remixes:{{ numRemixes }}</p>
   </article>
+
   <div class="base">
     <FavoriteComponent v-if="isLoggedIn" :post="post" @refreshFavCount="getFavoritesOnPost" />
+    <p class="author">(x {{ numFavorites }} )</p>
     <button @click="remixPost">Remix</button>
+    <p class="author">(x {{ numRemixes }} )</p>
     <menu v-if="props.post.author == currentUsername">
       <!-- <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li> -->
       <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
@@ -73,15 +77,26 @@ onBeforeMount(async () => {
 </template>
 
 <style scoped>
-p {
-  margin: 0em;
+img {
+  width: 20px;
+  height: 20px;
 }
 
 .author {
-  font-weight: bold;
+  font-family: "Khula", sans-serif;
+  font-weight: 400;
+  font-style: normal;
   font-size: 1.2em;
+  margin: 5px;
 }
 
+.title {
+  font-family: "Khula", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.5em;
+  margin: 0;
+}
 menu {
   list-style-type: none;
   display: flex;
@@ -110,10 +125,15 @@ menu {
 
 .content {
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  align-items: center;
-  max-width: 600px;
+  max-width: 750px;
   margin: 0 auto;
+}
+
+.authorSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: -10px;
 }
 </style>

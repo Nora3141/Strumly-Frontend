@@ -57,6 +57,7 @@ onBeforeMount(async () => {
 <template>
   <main class="column">
     <h1>Profile</h1>
+    <img src="@/assets/images/profile-icon.png" width="100px" />
     <h2>{{ currentUsername.toUpperCase() }}</h2>
     <h2>MY POSTS:</h2>
     <ProfilePostListComponent :posts="myPosts" :loaded="loaded" @refreshPosts="refreshPosts" />

@@ -38,4 +38,10 @@ onBeforeMount(async () => {
   <button type="button" @click="toggleFavorite" v-else><img src="@/assets/images/unfavorited-star.png" /></button>
 </template>
 
-<style scoped></style>
+<style scoped>
+img {
+  border: none;
+  width: 30px;
+  height: 30px;
+}
+</style>

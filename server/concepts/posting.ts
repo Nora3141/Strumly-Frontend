@@ -36,6 +36,7 @@ export default class PostingConcept {
 
   async getPosts() {
     // Returns all posts! You might want to page for better client performance
+    console.log("get posts called!");
     return await this.posts.readMany({}, { sort: { _id: -1 } });
   }
 

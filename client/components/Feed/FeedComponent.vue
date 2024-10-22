@@ -17,20 +17,34 @@ let includedTags = ref<string[]>([]);
 async function getRandomPost() {
   const filters = includedTags.value.join(",");
   let query: Record<string, string> = {}; // Initialize as an empty object
+  let postResults;
+  console.log("about to call get random post on filters: ", filters);
+  console.log("filters is empty string", !filters);
 
   // Only add tagNames to the query if filters is not empty
   if (filters) {
+    console.log("yes filters");
     query.tagNames = filters; // Set tagNames only if filters are defined
+    try {
+      // postResults = await fetchy("/api/filtering/getRandomPostFiltered", "GET", { query }); // pass query object
+      let query: Record<string, string> = {};
+      postResults = await fetchy(`/api/filtering/getRandomPostFiltered/${filters}`, "GET", { query });
+    } catch (error) {
+      console.log("An error occurred fetching a random post for the feed: ", error);
+      return;
+    }
+  } else {
+    try {
+      let query: Record<string, string> = {};
+      postResults = await fetchy("/api/posts", "GET", { query });
+      const randomIdx = Math.floor(Math.random() * postResults.length);
+      postResults = [postResults[randomIdx]];
+    } catch (error) {
+      console.log("An error occurred fetching a random post for the feed: ", error);
+      return;
+    }
   }
-
-  let postResults;
-  try {
-    // postResults = await fetchy("/api/filtering/getRandomPostFiltered", "GET", { query }); // pass query object
-    postResults = await fetchy("/api/filtering/getRandomPostFiltered", "GET", { query });
-  } catch (error) {
-    console.log("An error occurred fetching a random post for the feed: ", error);
-    return;
-  }
+  console.log("got post results value: ", postResults);
   posts.value = postResults;
 }
 

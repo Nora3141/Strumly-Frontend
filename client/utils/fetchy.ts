@@ -45,8 +45,10 @@ export async function fetchy(
     fetchOptions.body = JSON.stringify(options.body);
   }
 
+  console.log("in fetchy! About to fetch");
   const response = await fetch(fullUrl, fetchOptions);
   const result = await response.json();
+  console.log("in fetchy, got result: ", result);
 
   if (options.alert && result.msg) {
     useToastStore().showToast({ message: result.msg, style: response.ok ? "success" : "error" });

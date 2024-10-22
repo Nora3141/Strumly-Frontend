@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import FavoriteComponent from "@/components/Post/FavoriteComponent.vue";
+import TagComponent from "@/components/Post/TagComponent.vue";
 import router from "@/router";
 import { useUserStore } from "@/stores/user";
 import { formatDate } from "@/utils/formatDate";
@@ -12,6 +13,8 @@ const emit = defineEmits(["editPost", "refreshPosts"]);
 const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 let numFavorites = ref(0);
 let numRemixes = ref(0);
+let tagNames = ref([]);
+const tagStringToAdd = ref("");
 
 const deletePost = async () => {
   try {
@@ -38,6 +41,38 @@ const getRemixesOnPost = async () => {
   }
 };
 
+const getTagsOnPost = async () => {
+  console.log("getting tag names...");
+  try {
+    tagNames.value = await fetchy(`/api/filtering/getTags/${props.post._id}`, "GET");
+  } catch (error) {
+    console.log("An error occurred fetching the tags on a post: ", error);
+  }
+  console.log("tag names found were: ", tagNames.value);
+};
+
+const addTagToPost = async () => {
+  try {
+    await fetchy(`/api/filtering/addTag/${props.post._id}`, "POST", {
+      body: { postID: props.post._id, tagName: tagStringToAdd.value },
+    });
+  } catch (error) {
+    console.log("An error occurred adding tags to a post: ", error);
+  }
+  await getTagsOnPost();
+};
+
+const removeTagOnPost = async (tagToDeleteName: string) => {
+  try {
+    await fetchy(`/api/filtering/removeTag/${props.post._id}`, "POST", {
+      body: { postID: props.post._id, tagName: tagToDeleteName },
+    });
+  } catch (error) {
+    console.log("An error occurred adding tags to a post: ", error);
+  }
+  await getTagsOnPost();
+};
+
 function remixPost() {
   void router.push({ name: "Create", query: { originalPost: String(props.post._id) } });
 }
@@ -45,6 +80,7 @@ function remixPost() {
 onBeforeMount(async () => {
   await getFavoritesOnPost();
   await getRemixesOnPost();
+  await getTagsOnPost();
 });
 </script>
 
@@ -74,6 +110,18 @@ onBeforeMount(async () => {
       <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
     </article>
   </div>
+
+  <div class="tagsList">
+    <article v-for="tagName in tagNames" :key="tagName">
+      <TagComponent :tagName="tagName" @removeTagFromPost="removeTagOnPost(tagName)" />
+    </article>
+  </div>
+
+  <form @submit.prevent="addTagToPost()">
+    <p>Add tags:</p>
+    <textarea id="tags" v-model="tagStringToAdd" class="form-control mt-2 required-field" placeholder="tag1" required></textarea>
+    <button type="submit" class="btn btn-primary w-100">Add to Post</button>
+  </form>
 </template>
 
 <style scoped>
@@ -135,5 +183,10 @@ menu {
   flex-direction: row;
   align-items: center;
   margin-top: -10px;
+}
+
+.tagsList {
+  display: flex;
+  flex-direction: row;
 }
 </style>

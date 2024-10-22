@@ -263,7 +263,9 @@ class Routes {
   async getTagsOnPost(postID: string) {
     const oid = new ObjectId(postID);
     await Posting.assertPostExists(oid);
-    return await Filtering.getTagsOnPost(oid);
+    const result = await Filtering.getTagsOnPost(oid);
+    console.log("in routes, found these tags: ", result);
+    return result;
   }
 
   /**
@@ -305,11 +307,11 @@ class Routes {
    * @param tagNames a list of tags to check, separated by comma (whitespace ignored)
    * @returns a random post within the set of all posts that have all of the tags in 'tagNames'
    */
-  @Router.get("/filtering/getRandomPostFiltered")
+  @Router.get("/filtering/getRandomPostFiltered/:tagNames")
   async getRandomPostFiltered(tagNames: string) {
     console.log("===== getRandomPostsFiltered called on: ", tagNames);
     let allPosts = [];
-    if (tagNames == null) {
+    if (tagNames == "") {
       allPosts = await Posting.getPosts();
     } else {
       const allPostIDs = await Filtering.getPostsByTags(tagNames);
@@ -319,6 +321,13 @@ class Routes {
       allPosts = await Posting.getByID(allPostIDs);
     }
     console.log("got all posts: ", allPosts);
+    const randomIdx = Math.floor(Math.random() * allPosts.length);
+    return Responses.posts([allPosts[randomIdx]]);
+  }
+
+  @Router.get("/posts/getRandomPost")
+  async getRandomPostUnfiltered() {
+    const allPosts = await Posting.getPosts();
     const randomIdx = Math.floor(Math.random() * allPosts.length);
     return Responses.posts([allPosts[randomIdx]]);
   }

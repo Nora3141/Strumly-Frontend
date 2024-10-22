@@ -48,11 +48,19 @@ export default class FilteringConcept {
   }
 
   async getTagsOnPost(postID: ObjectId) {
+    console.log("in filtering getting tags on post!!!");
     const filter = await this.filters.readOne({ postID: postID });
     if (!filter) {
+      console.log("no filter found");
       return [];
     }
-    return filter.tags;
+    console.log("filter found!", filter.tags);
+    const result = [];
+    for (let i = 0; i < filter.tags.length; i++) {
+      const tagIdx = Number(filter.tags[i]);
+      result.push(this.ALL_TAGS[tagIdx]);
+    }
+    return result;
   }
 
   async getPostsByTags(tagNames: string) {

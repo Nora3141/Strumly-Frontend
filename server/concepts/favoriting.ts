@@ -50,6 +50,7 @@ export default class FavoritingConcept {
   }
 
   async getMostFavorited(postIDs: ObjectId[], numToGet: number) {
+    console.log("getting top ", numToGet, "favorited out of: ", postIDs);
     if (postIDs.length <= numToGet) return postIDs;
 
     const mapped = await Promise.all(

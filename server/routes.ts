@@ -239,8 +239,9 @@ class Routes {
   @Router.get("/favoriting/getTrendingFavorited/:numPosts")
   async getTrendingFavorited(numPosts: number) {
     // returns "numPosts" number of recent posts that are getting the most favorites
-    const WITHIN_NUM_DAYS = 3;
-    const recent_posts = await Posting.getRecentPosts(WITHIN_NUM_DAYS);
+    // const WITHIN_NUM_DAYS = 3;
+    //const recent_posts = await Posting.getRecentPosts(WITHIN_NUM_DAYS);
+    const recent_posts = await Posting.getPosts();
     const oids = [];
     for (let i = 0; i < recent_posts.length; i++) {
       oids.push(recent_posts[i]._id);
@@ -402,8 +403,9 @@ class Routes {
   @Router.get("/remixing/getTrendingRemixed/:numPosts")
   async getTrendingRemixed(numPosts: number) {
     // returns "numPosts" number of recent posts that are getting the most remixes
-    const WITHIN_NUM_DAYS = 3;
-    const recent_posts = await Posting.getRecentPosts(WITHIN_NUM_DAYS);
+    //const WITHIN_NUM_DAYS = 3;
+    // const recent_posts = await Posting.getRecentPosts(WITHIN_NUM_DAYS);
+    const recent_posts = await Posting.getPosts();
     const oids = [];
     for (let i = 0; i < recent_posts.length; i++) {
       oids.push(recent_posts[i]._id);

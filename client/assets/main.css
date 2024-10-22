@@ -19,7 +19,6 @@ button.button-error {
 a.button {
   color: #212529;
   background-color: #f1f3f5;
-  border: 1px solid #dee2e6;
   border-radius: 0.25em;
   padding: 0.375em 0.75em;
   text-decoration: none;
@@ -81,7 +80,6 @@ a.button {
   padding-bottom: 10px;
   width: fit-content;
   border-radius: 10px;
-  border: 1px black solid;
   font-size: 24px;
 }
 

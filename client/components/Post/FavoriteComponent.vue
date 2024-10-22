@@ -34,13 +34,19 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <button type="button" @click="toggleFavorite" v-if="favorited == true"><img src="@/assets/images/favorited-star.png" /></button>
-  <button type="button" @click="toggleFavorite" v-else><img src="@/assets/images/unfavorited-star.png" /></button>
+  <button type="button" class="action-button" @click="toggleFavorite" v-if="favorited == true"><img src="@/assets/images/favorited-star.png" /></button>
+  <button type="button" class="action-button" @click="toggleFavorite" v-else><img src="@/assets/images/unfavorited-star.png" /></button>
 </template>
 
 <style scoped>
-img {
+.action-button {
   border: none;
+  box-shadow: none;
+  background: transparent; /* In case there's a background color */
+  width: fit-content;
+}
+
+img {
   width: 30px;
   height: 30px;
 }

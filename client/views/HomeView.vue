@@ -42,7 +42,6 @@ onBeforeMount(async () => {
 <template>
   <main class="background-blank whole-page">
     <div class="container column">
-      <h1 class="pageHeader">HOME PAGE</h1>
       <TrendingBox class="trending-box" :sectionTitle="'Trending Posts'" :posts="trendingPosts" />
       <TrendingBox class="trending-box" :sectionTitle="'Getting Remixed in the Community'" :posts="trendingRemixedPosts" />
     </div>

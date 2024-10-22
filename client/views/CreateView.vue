@@ -5,6 +5,7 @@ import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 
 let originalPost = ref("");
+let originalPostName = ref("");
 const currentRoute = useRoute();
 
 function redirectToProfile() {
@@ -13,14 +14,18 @@ function redirectToProfile() {
 
 onBeforeMount(async () => {
   originalPost.value = currentRoute.query.originalPost ? String(currentRoute.query.originalPost) : "";
+  originalPostName.value = currentRoute.query.originalPostName ? String(currentRoute.query.originalPostName) : "";
 });
 </script>
 
 <template>
   <main class="pageContainer">
     <h1 class="khula-bold">Create!</h1>
-    <h3>Is a remix of... {{ originalPost }}</h3>
     <p class="khula-regular">Post your own music to the community! Follow the instructions below to create your post.</p>
+    <div class="remixHeader">
+      <img v-if="originalPost" src="@/assets/images/remix-icon.png" width="30px;" height="30px;" />
+      <p v-if="originalPostName">Remixing the post: {{ originalPostName }}</p>
+    </div>
     <CreatePostForm class="createPostContainer" @refresh-posts="redirectToProfile" :originalPost="originalPost" />
   </main>
 </template>
@@ -44,5 +49,11 @@ p {
   flex-direction: column;
   align-items: center;
   background-color: #f5f5f5;
+}
+
+.remixHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 </style>

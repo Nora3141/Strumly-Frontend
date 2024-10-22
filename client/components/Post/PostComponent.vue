@@ -74,7 +74,7 @@ const removeTagOnPost = async (tagToDeleteName: string) => {
 };
 
 function remixPost() {
-  void router.push({ name: "Create", query: { originalPost: String(props.post._id) } });
+  void router.push({ name: "Create", query: { originalPost: String(props.post._id), originalPostName: String(props.post.videoTitle) } });
 }
 
 onBeforeMount(async () => {
@@ -85,56 +85,60 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <article class="content">
-    <p class="title">{{ props.post.videoTitle }}</p>
-    <div class="authorSection">
-      <img src="@/assets/images/profile-icon.png" />
-      <p class="author">{{ props.post.author }}</p>
+  <article class="content khula-regular">
+    <menu v-if="props.post.author == currentUsername">
+      <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
+    </menu>
+    <div class="post-header">
+      <p class="title">{{ props.post.videoTitle }}</p>
+      <div class="authorSection">
+        <img src="@/assets/images/profile-icon.png" width="20px" height="20px" />
+        <p class="author">{{ props.post.author }}</p>
+      </div>
     </div>
-    <iframe :src="props.post.videoURL" width="750" height="500"></iframe>
+    <iframe :src="props.post.videoURL" width="270" height="480" allowfullscreen></iframe>
     <p>Description: {{ props.post.videoDescription }}</p>
     <p v-if="props.post.originalArtist !== null">Original Artist: {{ props.post.originalArtist }}</p>
   </article>
 
   <div class="base">
     <FavoriteComponent v-if="isLoggedIn" :post="post" @refreshFavCount="getFavoritesOnPost" />
-    <p class="author">(x {{ numFavorites }} )</p>
-    <button @click="remixPost">Remix</button>
-    <p class="author">(x {{ numRemixes }} )</p>
-    <menu v-if="props.post.author == currentUsername">
-      <!-- <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li> -->
-      <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
-    </menu>
+    <p class="khula-regular">(x {{ numFavorites }} )</p>
+    <button class="action-button" @click="remixPost"><img src="@/assets/images/remix-icon.png" width="30px;" height="30px;" /></button>
+    <p class="khula-regular">(x {{ numRemixes }} )</p>
     <article class="timestamp">
       <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
       <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
     </article>
   </div>
 
-  <div class="tagsList">
-    <article v-for="tagName in tagNames" :key="tagName">
-      <TagComponent :tagName="tagName" @removeTagFromPost="removeTagOnPost(tagName)" />
-    </article>
+  <div v-if="props.post.author == currentUsername">
+    <div class="tagsList">
+      <article v-for="tagName in tagNames" :key="tagName">
+        <TagComponent :tagName="tagName" @removeTagFromPost="removeTagOnPost(tagName)" />
+      </article>
+    </div>
+    <form @submit.prevent="addTagToPost()">
+      <p>Add tags:</p>
+      <textarea id="tags" v-model="tagStringToAdd" class="form-control mt-2 required-field" placeholder="tag1" required></textarea>
+      <button type="submit" class="btn btn-primary w-100">Add to Post</button>
+    </form>
   </div>
-
-  <form @submit.prevent="addTagToPost()">
-    <p>Add tags:</p>
-    <textarea id="tags" v-model="tagStringToAdd" class="form-control mt-2 required-field" placeholder="tag1" required></textarea>
-    <button type="submit" class="btn btn-primary w-100">Add to Post</button>
-  </form>
 </template>
 
 <style scoped>
-img {
-  width: 20px;
-  height: 20px;
+.post-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.action-button {
+  border: none;
+  box-shadow: none;
+  background: transparent; /* In case there's a background color */
 }
 
 .author {
-  font-family: "Khula", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 1.2em;
   margin: 5px;
 }
 
@@ -163,8 +167,9 @@ menu {
 
 .base {
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
   align-items: center;
+  justify-items: center;
 }
 
 .base article:only-child {
@@ -174,7 +179,7 @@ menu {
 .content {
   display: flex;
   flex-direction: column;
-  max-width: 750px;
+  width: fit-content;
   margin: 0 auto;
 }
 

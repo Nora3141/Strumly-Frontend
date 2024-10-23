@@ -87,7 +87,7 @@ const emptyForm = () => {
             </h4>
             <p>Record a video of your music and upload it to Google Drive.</p>
             <div class="d-flex align-items-center text-muted mb-2">
-              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <i class="bi bi-exclamation-circle me-2"></i>
               <p class="mb-0">Note: Make sure your link is publicly accessible!</p>
             </div>
             <textarea id="videoURL" v-model="videoURL" class="form-control mt-2 required-field" placeholder="Google Drive URL Here" required></textarea>

@@ -4,6 +4,9 @@ import TagComponent from "@/components/Post/TagComponent.vue";
 import router from "@/router";
 import { useUserStore } from "@/stores/user";
 import { formatDate } from "@/utils/formatDate";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.js";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
@@ -14,6 +17,7 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 let numFavorites = ref(0);
 let numRemixes = ref(0);
 let tagNames = ref([]);
+let infoShowing = ref(false);
 const tagStringToAdd = ref("");
 
 const deletePost = async () => {
@@ -81,6 +85,10 @@ function remixPost() {
   void router.push({ name: "Create", query: { originalPost: String(props.post._id), originalPostName: String(props.post.videoTitle) } });
 }
 
+function toggleInfoShowing() {
+  infoShowing.value = !infoShowing.value;
+}
+
 onBeforeMount(async () => {
   await getFavoritesOnPost();
   await getRemixesOnPost();
@@ -89,47 +97,61 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <main class="post-component-wrapper">
-    <article class="content khula-regular">
-      <menu v-if="props.post.author == currentUsername">
-        <li><button class="button-error btn-small pure-button delete-button" @click="deletePost">x</button></li>
-      </menu>
-      <div class="post-header">
-        <p class="title">{{ props.post.videoTitle }}</p>
-        <div class="authorSection">
-          <img src="@/assets/images/profile-icon.png" width="20px" height="20px" />
-          <p class="author">{{ props.post.author }}</p>
+  <main>
+    <div v-if="props.post.author == currentUsername" class="d-flex align-items-center text-muted mb-2">
+      <i class="bi bi-exclamation-circle me-2"></i>
+      <p class="mb-0">As the creator of this post, you can choose to delete it or edit the tags</p>
+    </div>
+    <div class="post-and-info-wrapper">
+      <div :class="['post-component-wrapper', infoShowing ? 'post-square' : 'post-rounded']">
+        <article class="content khula-regular">
+          <menu v-if="props.post.author == currentUsername">
+            <li><button class="button-error btn-small pure-button delete-button" @click="deletePost">delete</button></li>
+          </menu>
+          <div class="post-header">
+            <h4 class="title khula-bold">{{ props.post.videoTitle }}</h4>
+            <div class="authorSection">
+              <img src="@/assets/images/profile-icon.png" width="20px" height="20px" />
+              <p class="author">{{ props.post.author }}</p>
+            </div>
+            <button @click="toggleInfoShowing" class="btn"><i class="bi bi-info-circle"></i></button>
+          </div>
+          <div class="video-container">
+            <iframe :src="props.post.videoURL" width="315" height="560" allowfullscreen frameborder="0"></iframe>
+          </div>
+        </article>
+
+        <div class="base">
+          <FavoriteComponent v-if="isLoggedIn" :post="post" @refreshFavCount="getFavoritesOnPost" />
+          <p class="khula-regular">(x {{ numFavorites }} )</p>
+          <button class="action-button" @click="remixPost"><img src="@/assets/images/remix-icon.png" width="30px;" height="30px;" /></button>
+          <p class="khula-regular">(x {{ numRemixes }} )</p>
+          <article class="timestamp">
+            <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
+            <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
+          </article>
         </div>
       </div>
-      <div class="video-container">
-        <iframe :src="props.post.videoURL" width="315" height="560" allowfullscreen frameborder="0"></iframe>
+      <div v-if="infoShowing" class="info-wrapper">
+        <h4 class="info-section-header khula-bold">About this post:</h4>
+        <p class="khula-regular">{{ props.post.videoDescription }}</p>
+        <hr />
+        <h4 v-if="props.post.originalArtist" class="info-section-header khula-bold">Original Artist:</h4>
+        <p v-if="props.post.originalArtist" class="khula-regular">{{ props.post.originalArtist }}</p>
+        <hr v-if="props.post.originalArtist" />
+        <div v-if="props.post.author == currentUsername">
+          <div class="tagsList">
+            <article v-for="tagName in tagNames" :key="tagName">
+              <TagComponent :tagName="tagName" @removeTagFromPost="removeTagOnPost(tagName)" />
+            </article>
+          </div>
+          <form @submit.prevent="addTagToPost()">
+            <p>Add tags:</p>
+            <textarea id="tags" v-model="tagStringToAdd" class="form-control mt-2 required-field" placeholder="tag1" required></textarea>
+            <button type="submit" class="btn btn-primary w-100">Add to Post</button>
+          </form>
+        </div>
       </div>
-      <p>Description: {{ props.post.videoDescription }}</p>
-      <p v-if="props.post.originalArtist !== null">Original Artist: {{ props.post.originalArtist }}</p>
-    </article>
-
-    <div class="base">
-      <FavoriteComponent v-if="isLoggedIn" :post="post" @refreshFavCount="getFavoritesOnPost" />
-      <p class="khula-regular">(x {{ numFavorites }} )</p>
-      <button class="action-button" @click="remixPost"><img src="@/assets/images/remix-icon.png" width="30px;" height="30px;" /></button>
-      <p class="khula-regular">(x {{ numRemixes }} )</p>
-      <article class="timestamp">
-        <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
-        <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
-      </article>
-    </div>
-
-    <div v-if="props.post.author == currentUsername">
-      <div class="tagsList">
-        <article v-for="tagName in tagNames" :key="tagName">
-          <TagComponent :tagName="tagName" @removeTagFromPost="removeTagOnPost(tagName)" />
-        </article>
-      </div>
-      <form @submit.prevent="addTagToPost()">
-        <p>Add tags:</p>
-        <textarea id="tags" v-model="tagStringToAdd" class="form-control mt-2 required-field" placeholder="tag1" required></textarea>
-        <button type="submit" class="btn btn-primary w-100">Add to Post</button>
-      </form>
     </div>
   </main>
 </template>
@@ -152,9 +174,18 @@ onBeforeMount(async () => {
 }
 .post-component-wrapper {
   border: 1px solid black;
-  border-radius: 20px;
   overflow: hidden;
   background-color: white;
+}
+.post-rounded {
+  border-radius: 20px;
+}
+
+.post-square {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 .post-header {
   margin-left: 10px;
@@ -173,12 +204,9 @@ onBeforeMount(async () => {
 }
 
 .title {
-  font-family: "Khula", sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  font-size: 1.5em;
-  margin: 0;
+  padding: 10px;
 }
+
 menu {
   list-style-type: none;
   display: flex;
@@ -223,5 +251,26 @@ menu {
 .tagsList {
   display: flex;
   flex-direction: row;
+}
+
+.post-and-info-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.info-wrapper {
+  background-color: white;
+  border: 1px solid gray;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.info-section-header {
+  margin: 10px;
+  padding: 10px;
+}
+
+p {
+  text-align: center;
 }
 </style>

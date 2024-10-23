@@ -18,8 +18,7 @@ onBeforeMount(async () => {
 
 <template>
   <main>
-    <h1>Feed</h1>
-    <p>(Gives you a random post when you press +)</p>
+    <h1 class="mclaren-regular">Feed</h1>
     <FeedComponent :specificPostID="specificPost" />
   </main>
 </template>

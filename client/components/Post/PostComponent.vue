@@ -122,14 +122,14 @@ onBeforeMount(async () => {
         </article>
 
         <div class="base">
-          <FavoriteComponent v-if="isLoggedIn" :post="post" @refreshFavCount="getFavoritesOnPost" />
-          <p class="khula-regular">(x {{ numFavorites }} )</p>
-          <button class="action-button" @click="remixPost"><img src="@/assets/images/remix-icon.png" width="30px;" height="30px;" /></button>
-          <p class="khula-regular">(x {{ numRemixes }} )</p>
-          <article class="timestamp">
-            <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
-            <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
-          </article>
+          <div class="action-part">
+            <FavoriteComponent v-if="isLoggedIn" :post="post" @refreshFavCount="getFavoritesOnPost" />
+            <p class="khula-regular">(x {{ numFavorites }} )</p>
+          </div>
+          <div class="action-part">
+            <button class="action-button" @click="remixPost"><img src="@/assets/images/remix-icon.png" width="30px;" height="30px;" /></button>
+            <p class="khula-regular">(x {{ numRemixes }} )</p>
+          </div>
         </div>
       </div>
       <div v-if="infoShowing" class="info-wrapper">
@@ -151,6 +151,10 @@ onBeforeMount(async () => {
             <button type="submit" class="btn btn-primary w-100">Add to Post</button>
           </form>
         </div>
+        <article class="timestamp">
+          <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
+          <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
+        </article>
       </div>
     </div>
   </main>
@@ -225,9 +229,11 @@ menu {
 
 .base {
   display: flex;
-  justify-content: left;
-  align-items: center;
+  flex-direction: row;
   justify-items: center;
+  z-index: 10;
+  margin-top: auto;
+  padding: 5px;
 }
 
 .base article:only-child {
@@ -268,6 +274,11 @@ menu {
 .info-section-header {
   margin: 10px;
   padding: 10px;
+}
+
+.action-part {
+  display: flex;
+  flex-direction: row;
 }
 
 p {

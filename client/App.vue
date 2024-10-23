@@ -27,63 +27,66 @@ function toggleUserDropdown() {
 </script>
 
 <template>
-  <header>
-    <nav class="navbar navbar-expand-lg orange-background">
-      <RouterLink class="navbar-brand" :to="{ name: 'Home' }">
-        <p class="mclaren-regular strumly-text">strumly</p>
-      </RouterLink>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <main class="background-blank-full">
+    <header>
+      <nav class="navbar navbar-expand-lg orange-background">
+        <RouterLink class="navbar-brand" :to="{ name: 'Home' }">
+          <p class="mclaren-regular strumly-text">strumly</p>
+        </RouterLink>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Home' }" :class="{ active: currentRouteName === 'Home' }">
-              <img class="navbar-icon" src="@/assets/images/home.png" /> Home
-            </RouterLink>
-          </li>
-          <li class="nav-item">
-            <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Create' }" :class="{ active: currentRouteName === 'Create' }">
-              <img class="navbar-icon" src="@/assets/images/plus.png" /> Create
-            </RouterLink>
-          </li>
-          <li class="nav-item">
-            <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Feed' }" :class="{ active: currentRouteName === 'Feed' }">
-              <img class="navbar-icon" src="@/assets/images/video.png" /> Feed
-            </RouterLink>
-          </li>
-          <li v-if="isLoggedIn" class="nav-item dropdown">
-            <span class="nav-link dropdown-toggle" @click="toggleUserDropdown" aria-haspopup="true" aria-expanded="false"> <img class="navbar-icon" src="@/assets/images/user.png" /> User </span>
-            <div v-if="dropdownVisibile" class="dropdown-menu show">
-              <RouterLink class="dropdown-item" :to="{ name: 'Settings' }">Settings</RouterLink>
-              <RouterLink class="dropdown-item" :to="{ name: 'Profile' }">Profile</RouterLink>
-            </div>
-          </li>
-          <li v-else class="nav-item">
-            <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Login' }" :class="{ active: currentRouteName === 'Login' }"> Login </RouterLink>
-          </li>
-        </ul>
-        <!--
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Home' }" :class="{ active: currentRouteName === 'Home' }">
+                <img class="navbar-icon" src="@/assets/images/home.png" /> Home
+              </RouterLink>
+            </li>
+            <li class="nav-item">
+              <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Create' }" :class="{ active: currentRouteName === 'Create' }">
+                <img class="navbar-icon" src="@/assets/images/plus.png" /> Create
+              </RouterLink>
+            </li>
+            <li class="nav-item">
+              <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Feed' }" :class="{ active: currentRouteName === 'Feed' }">
+                <img class="navbar-icon" src="@/assets/images/video.png" /> Feed
+              </RouterLink>
+            </li>
+            <li v-if="isLoggedIn" class="nav-item dropdown">
+              <span class="nav-link dropdown-toggle" @click="toggleUserDropdown" aria-haspopup="true" aria-expanded="false"> <img class="navbar-icon" src="@/assets/images/user.png" /> User </span>
+              <div v-if="dropdownVisibile" class="dropdown-menu show">
+                <RouterLink class="dropdown-item" :to="{ name: 'Settings' }">Settings</RouterLink>
+                <RouterLink class="dropdown-item" :to="{ name: 'Profile' }">Profile</RouterLink>
+              </div>
+            </li>
+            <li v-else class="nav-item">
+              <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Login' }" :class="{ active: currentRouteName === 'Login' }"> Login </RouterLink>
+            </li>
+          </ul>
+          <!--
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
-      --></div>
-    </nav>
-    <article v-if="toast !== null" class="toast" :class="toast.style">
-      <p>{{ toast.message }}</p>
-    </article>
-  </header>
-  <RouterView />
+      -->
+        </div>
+      </nav>
+      <article v-if="toast !== null" class="toast" :class="toast.style">
+        <p>{{ toast.message }}</p>
+      </article>
+    </header>
+    <RouterView />
+  </main>
 </template>
 
 <style scoped>

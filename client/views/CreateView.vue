@@ -20,8 +20,8 @@ onBeforeMount(async () => {
 
 <template>
   <main class="pageContainer">
-    <h1 class="khula-bold">Create!</h1>
-    <p class="khula-regular">Post your own music to the community! Follow the instructions below to create your post.</p>
+    <h1 class="mclaren-regular">Create</h1>
+    <p class="khula-light">Post your own music to the community! Follow the instructions below to create your post.</p>
     <div class="remixHeader">
       <img v-if="originalPost" src="@/assets/images/remix-icon.png" width="30px;" height="30px;" />
       <p v-if="originalPostName">Remixing the post: {{ originalPostName }}</p>

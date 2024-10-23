@@ -17,6 +17,10 @@ let tagNames = ref([]);
 const tagStringToAdd = ref("");
 
 const deletePost = async () => {
+  const confirmed = confirm("Are you sure you want to delete this post? This action cannot be undone.");
+  if (!confirmed) {
+    return;
+  }
   try {
     await fetchy(`/api/posts/${props.post._id}`, "DELETE");
   } catch {
@@ -85,49 +89,75 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <article class="content khula-regular">
-    <menu v-if="props.post.author == currentUsername">
-      <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
-    </menu>
-    <div class="post-header">
-      <p class="title">{{ props.post.videoTitle }}</p>
-      <div class="authorSection">
-        <img src="@/assets/images/profile-icon.png" width="20px" height="20px" />
-        <p class="author">{{ props.post.author }}</p>
+  <main class="post-component-wrapper">
+    <article class="content khula-regular">
+      <menu v-if="props.post.author == currentUsername">
+        <li><button class="button-error btn-small pure-button delete-button" @click="deletePost">x</button></li>
+      </menu>
+      <div class="post-header">
+        <p class="title">{{ props.post.videoTitle }}</p>
+        <div class="authorSection">
+          <img src="@/assets/images/profile-icon.png" width="20px" height="20px" />
+          <p class="author">{{ props.post.author }}</p>
+        </div>
       </div>
-    </div>
-    <iframe :src="props.post.videoURL" width="270" height="480" allowfullscreen></iframe>
-    <p>Description: {{ props.post.videoDescription }}</p>
-    <p v-if="props.post.originalArtist !== null">Original Artist: {{ props.post.originalArtist }}</p>
-  </article>
-
-  <div class="base">
-    <FavoriteComponent v-if="isLoggedIn" :post="post" @refreshFavCount="getFavoritesOnPost" />
-    <p class="khula-regular">(x {{ numFavorites }} )</p>
-    <button class="action-button" @click="remixPost"><img src="@/assets/images/remix-icon.png" width="30px;" height="30px;" /></button>
-    <p class="khula-regular">(x {{ numRemixes }} )</p>
-    <article class="timestamp">
-      <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
-      <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
+      <div class="video-container">
+        <iframe :src="props.post.videoURL" width="315" height="560" allowfullscreen frameborder="0"></iframe>
+      </div>
+      <p>Description: {{ props.post.videoDescription }}</p>
+      <p v-if="props.post.originalArtist !== null">Original Artist: {{ props.post.originalArtist }}</p>
     </article>
-  </div>
 
-  <div v-if="props.post.author == currentUsername">
-    <div class="tagsList">
-      <article v-for="tagName in tagNames" :key="tagName">
-        <TagComponent :tagName="tagName" @removeTagFromPost="removeTagOnPost(tagName)" />
+    <div class="base">
+      <FavoriteComponent v-if="isLoggedIn" :post="post" @refreshFavCount="getFavoritesOnPost" />
+      <p class="khula-regular">(x {{ numFavorites }} )</p>
+      <button class="action-button" @click="remixPost"><img src="@/assets/images/remix-icon.png" width="30px;" height="30px;" /></button>
+      <p class="khula-regular">(x {{ numRemixes }} )</p>
+      <article class="timestamp">
+        <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
+        <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
       </article>
     </div>
-    <form @submit.prevent="addTagToPost()">
-      <p>Add tags:</p>
-      <textarea id="tags" v-model="tagStringToAdd" class="form-control mt-2 required-field" placeholder="tag1" required></textarea>
-      <button type="submit" class="btn btn-primary w-100">Add to Post</button>
-    </form>
-  </div>
+
+    <div v-if="props.post.author == currentUsername">
+      <div class="tagsList">
+        <article v-for="tagName in tagNames" :key="tagName">
+          <TagComponent :tagName="tagName" @removeTagFromPost="removeTagOnPost(tagName)" />
+        </article>
+      </div>
+      <form @submit.prevent="addTagToPost()">
+        <p>Add tags:</p>
+        <textarea id="tags" v-model="tagStringToAdd" class="form-control mt-2 required-field" placeholder="tag1" required></textarea>
+        <button type="submit" class="btn btn-primary w-100">Add to Post</button>
+      </form>
+    </div>
+  </main>
 </template>
 
 <style scoped>
+.video-container {
+  /* Set the dimensions for the cropped video */
+  width: 500px; /* or a specific width, e.g., 500px */
+  height: 600px; /* Custom height you want for cropping */
+
+  position: relative;
+  overflow: hidden;
+}
+
+.video-container iframe {
+  /* Maintain the aspect ratio of the video, but stretch it to fill the container */
+  position: absolute;
+  width: 500px;
+  height: 600px; /* Increase the height to zoom in and crop */
+}
+.post-component-wrapper {
+  border: 1px solid black;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: white;
+}
 .post-header {
+  margin-left: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

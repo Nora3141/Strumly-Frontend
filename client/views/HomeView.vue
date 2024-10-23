@@ -44,8 +44,8 @@ function enterSearch() {
 
 onBeforeMount(async () => {
   document.body.classList.add("no-scroll");
-  await getTrendingPosts(3);
-  await getTrendingRemixedPosts(3);
+  await getTrendingPosts(8);
+  await getTrendingRemixedPosts(8);
 });
 </script>
 
@@ -76,9 +76,6 @@ h1,
 h2 {
   text-align: center;
 }
-.trending-box {
-  margin-top: 20px;
-}
 
 .whole-page {
   height: 100vh;
@@ -90,7 +87,6 @@ h2 {
   align-items: center;
   width: 100%;
   max-width: 400px;
-  margin: 20px auto;
 }
 
 .search-results {

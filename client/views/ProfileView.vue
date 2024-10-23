@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import PagingPostList from "@/components/Post/PagingPostList.vue";
 import router from "@/router";
 import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
-import { onBeforeMount, ref } from "vue";
-import ProfilePostListComponent from "../components/Post/ProfilePostListComponent.vue";
+import { computed, onBeforeMount, ref } from "vue";
 
 const { currentUsername, currentUserID } = storeToRefs(useUserStore());
 const { logoutUser, deleteUser } = useUserStore();
 let myPosts = ref<Array<Record<string, string>>>([]);
+const postsPerPage = 4;
+let myPostsPageNum = ref(1);
 let favoritedPosts = ref<Array<Record<string, string>>>([]);
 const loaded = ref(false);
 
@@ -52,16 +54,57 @@ onBeforeMount(async () => {
   await getPosts(currentUsername.value);
   loaded.value = true;
 });
+
+// Pagination logic
+const paginatedPosts = computed(() => {
+  const start = (myPostsPageNum.value - 1) * postsPerPage;
+  return myPosts.value.slice(start, start + postsPerPage);
+});
+
+const hasNextPage = computed(() => {
+  return myPostsPageNum.value * postsPerPage < myPosts.value.length;
+});
+
+function nextPage() {
+  if (hasNextPage.value) {
+    myPostsPageNum.value++;
+  }
+}
+
+const hasPreviousPage = computed(() => {
+  return myPostsPageNum.value > 1;
+});
+
+function previousPage() {
+  if (myPostsPageNum.value > 1) {
+    myPostsPageNum.value--;
+  }
+}
 </script>
 
 <template>
   <main class="column">
-    <h1>Profile</h1>
     <img src="@/assets/images/profile-icon.png" width="100px" />
     <h2>{{ currentUsername.toUpperCase() }}</h2>
-    <h2>MY POSTS:</h2>
-    <ProfilePostListComponent :posts="myPosts" :loaded="loaded" @refreshPosts="refreshPosts" />
-    <h2>MY FAVORITED POSTS:</h2>
-    <ProfilePostListComponent :posts="favoritedPosts" :loaded="loaded" @refreshPosts="refreshPosts" />
+    <h2>My Posts:</h2>
+    <PagingPostList :myPosts="myPosts" />
+
+    <h2>My Favorited Posts:</h2>
+    <PagingPostList :myPosts="favoritedPosts" />
   </main>
 </template>
+
+<style scoped>
+.my-posts-section {
+  display: flex;
+  flex-direction: row;
+}
+
+.my-posts-section li {
+  list-style-type: none; /* Remove the bullet point */
+}
+
+.posts-section-wrapper {
+  width: 60vw;
+}
+</style>

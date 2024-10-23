@@ -83,8 +83,8 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <h3>Filter by tags:</h3>
   <div class="tagButtons">
+    <h3>Filter by tags:</h3>
     <button :class="tagsActivationStatus[0] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(0)">Tag 1</button>
     <button :class="tagsActivationStatus[1] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(1)">Tag 2</button>
     <button :class="tagsActivationStatus[2] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(2)">Tag 3</button>

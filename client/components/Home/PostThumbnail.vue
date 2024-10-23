@@ -37,16 +37,16 @@ p {
 
 .thumbnail-image {
   border-radius: 10px;
-  width: 200px;
-  height: auto;
+  width: 230px;
+  height: 150px;
   object-fit: cover;
 }
 .content {
-  max-width: 200px;
-  margin: 10px;
+  width: fit-content;
 }
 
 .clickable-div {
   cursor: pointer; /* Changes the cursor to a pointer */
+  width: fit-content;
 }
 </style>

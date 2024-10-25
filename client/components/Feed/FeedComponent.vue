@@ -10,8 +10,8 @@ const props = defineProps(["specificPostID"]);
 
 const loaded = ref(false);
 let posts = ref<Array<Record<string, string>>>([]);
-let tagsActivationStatus = ref<boolean[]>([false, false, false]);
-let ALL_TAGS = ["tag1", "tag2", "tag3"];
+let tagsActivationStatus = ref<boolean[]>([false, false, false, false, false, false, false]);
+let ALL_TAGS = ["Guitar", "Piano", "Voice", "Drums", "Beginner", "Intermediate", "Advanced"];
 let includedTags = ref<string[]>([]);
 
 async function getRandomPost() {
@@ -83,11 +83,16 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="tagButtons">
-    <p><i class="bi bi-gear-fill"></i> Filter by tags:</p>
-    <button :class="tagsActivationStatus[0] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(0)">Tag 1</button>
-    <button :class="tagsActivationStatus[1] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(1)">Tag 2</button>
-    <button :class="tagsActivationStatus[2] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(2)">Tag 3</button>
+  <div class="filters-bar">
+    <div class="tagButtons khula-light">
+      <button :class="tagsActivationStatus[0] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(0)">Guitar</button>
+      <button :class="tagsActivationStatus[1] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(1)">Piano</button>
+      <button :class="tagsActivationStatus[2] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(2)">Voice</button>
+      <button :class="tagsActivationStatus[3] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(3)">Drums</button>
+      <button :class="tagsActivationStatus[4] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(4)">Easy</button>
+      <button :class="tagsActivationStatus[5] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(5)">Medium</button>
+      <button :class="tagsActivationStatus[6] ? 'tagButtonPressed' : 'tagButtonUnpressed'" @click="clickTagButton(6)">Hard</button>
+    </div>
   </div>
   <div class="feedBlock">
     <section class="posts" v-if="loaded && posts.length !== 0">
@@ -139,16 +144,36 @@ h3 {
 }
 
 .tagButtonUnpressed {
-  background-color: lightyellow;
+  background-color: rgb(196, 196, 196);
   padding: 5px;
+  padding-right: 15px;
+  padding-left: 15px;
   margin-right: 5px;
   margin-left: 5px;
+  border: none;
+  border-radius: 20px;
 }
 
 .tagButtonPressed {
-  background-color: gray;
+  background-color: rgb(81, 81, 81);
+  color: rgb(177, 177, 177);
   padding: 5px;
+  padding-right: 15px;
+  padding-left: 15px;
   margin-right: 5px;
   margin-left: 5px;
+  border: none;
+  border-radius: 20px;
+}
+
+.filters-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.filter-text {
+  font-size: 1.25em;
 }
 </style>

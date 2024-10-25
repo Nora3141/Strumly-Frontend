@@ -59,10 +59,10 @@ const getTagsOnPost = async () => {
   console.log("tag names found were: ", tagNames.value);
 };
 
-const addTagToPost = async () => {
+const addTagToPost = async (tagNameString: string) => {
   try {
     await fetchy(`/api/filtering/addTag/${props.post._id}`, "POST", {
-      body: { postID: props.post._id, tagName: tagStringToAdd.value },
+      body: { postID: props.post._id, tagName: tagNameString },
     });
   } catch (error) {
     console.log("An error occurred adding tags to a post: ", error);
@@ -139,18 +139,27 @@ onBeforeMount(async () => {
         <h4 v-if="props.post.originalArtist" class="info-section-header khula-bold">Original Artist:</h4>
         <p v-if="props.post.originalArtist" class="khula-regular">{{ props.post.originalArtist }}</p>
         <hr v-if="props.post.originalArtist" />
-        <div v-if="props.post.author == currentUsername">
-          <div class="tagsList">
-            <article v-for="tagName in tagNames" :key="tagName">
-              <TagComponent :tagName="tagName" @removeTagFromPost="removeTagOnPost(tagName)" />
-            </article>
-          </div>
+        <h4 class="info-section-header khula-bold">Tags:</h4>
+        <div class="tagsList tags-grid">
+          <article v-for="tagName in tagNames" :key="tagName">
+            <TagComponent :tagName="tagName" @removeTagFromPost="removeTagOnPost(tagName)" />
+          </article>
+        </div>
+        <div v-if="props.post.author == currentUsername" class="add-tags-grid khula-regular">
+          <button v-if="!tagNames.includes('Guitar')" @click="addTagToPost('Guitar')" class="add-tag">+ Guitar</button>
+          <button v-if="!tagNames.includes('Piano')" @click="addTagToPost('Piano')" class="add-tag">+ Piano</button>
+          <button v-if="!tagNames.includes('Voice')" @click="addTagToPost('Voice')" class="add-tag">+ Voice</button>
+          <button v-if="!tagNames.includes('Drums')" @click="addTagToPost('Drums')" class="add-tag">+ Drums</button>
+          <button v-if="!tagNames.includes('Easy')" @click="addTagToPost('Easy')" class="add-tag">+ Easy</button>
+          <button v-if="!tagNames.includes('Medium')" @click="addTagToPost('Medium')" class="add-tag">+ Medium</button>
+          <button v-if="!tagNames.includes('Hard')" @click="addTagToPost('Hard')" class="add-tag">+ Hard</button>
+          <!--
           <form @submit.prevent="addTagToPost()">
             <p>Add tags:</p>
             <textarea id="tags" v-model="tagStringToAdd" class="form-control mt-2 required-field" placeholder="tag1" required></textarea>
             <button type="submit" class="btn btn-primary w-100">Add to Post</button>
           </form>
-        </div>
+        --></div>
         <article class="timestamp">
           <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
           <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
@@ -283,5 +292,25 @@ menu {
 
 p {
   text-align: center;
+}
+
+.tags-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 70px);
+}
+
+.add-tags-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+}
+
+.add-tag {
+  background-color: rgb(59, 206, 66);
+  padding: 5px;
+  border-radius: 10px;
+  width: fit-content;
+  margin: 5px;
+  position: relative;
+  border: none;
 }
 </style>

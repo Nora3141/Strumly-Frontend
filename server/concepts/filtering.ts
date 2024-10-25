@@ -8,7 +8,7 @@ export interface FilterDoc extends BaseDoc {
 
 export default class FilteringConcept {
   public readonly filters: DocCollection<FilterDoc>;
-  public readonly ALL_TAGS = ["tag1", "tag2", "tag3"];
+  public readonly ALL_TAGS = ["Guitar", "Piano", "Voice", "Drums", "Easy", "Medium", "Hard"];
 
   constructor(collectionName: string) {
     this.filters = new DocCollection<FilterDoc>(collectionName);

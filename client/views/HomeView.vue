@@ -47,14 +47,13 @@ function goToLogin() {
 }
 
 onBeforeMount(async () => {
-  document.body.classList.add("no-scroll");
   await getTrendingPosts(8);
   await getTrendingRemixedPosts(8);
 });
 </script>
 
 <template>
-  <main class="background-blank-whole whole-page no-scroll">
+  <main class="background-blank-whole whole-page">
     <div class="container column">
       <h1 class="page-title mclaren-regular">Welcome to Strumly!</h1>
       <div v-if="!isLoggedIn" class="top-section">

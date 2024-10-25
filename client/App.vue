@@ -24,8 +24,8 @@ onBeforeMount(async () => {
   }
 });
 
-function toggleUserDropdown() {
-  dropdownVisibile.value = !dropdownVisibile.value;
+function toggleUserDropdown(visible = true) {
+  dropdownVisibile.value = visible;
 }
 
 function enterSearch() {
@@ -73,12 +73,14 @@ async function logout() {
                 </RouterLink>
               </li>
               <li v-if="isLoggedIn" class="nav-item dropdown khula-regular">
-                <span class="nav-link dropdown-toggle" @click="toggleUserDropdown" aria-haspopup="true" aria-expanded="false"> <img class="navbar-icon" src="@/assets/images/user.png" /> User </span>
-                <div v-if="dropdownVisibile" class="dropdown-menu show">
+                <span class="nav-link dropdown-toggle" @click="toggleUserDropdown(true)" aria-haspopup="true" aria-expanded="false">
+                  <img class="navbar-icon" src="@/assets/images/user.png" /> User
+                </span>
+                <div v-if="dropdownVisibile" class="dropdown-menu show" @mouseleave="toggleUserDropdown(false)">
                   <RouterLink class="dropdown-item" :to="{ name: 'Settings' }">Settings</RouterLink>
                   <RouterLink class="dropdown-item" :to="{ name: 'Profile' }">Profile</RouterLink>
                   <div class="dropdown-divider"></div>
-                  <button class="dropdown-item" @click="logout">Logout</button>
+                  <button class="dropdown-item logout-text" @click="logout">Logout</button>
                 </div>
               </li>
               <li v-else class="nav-item">
@@ -230,6 +232,10 @@ ul {
   display: flex;
   align-items: center; /* Centers the "strumly" logo vertically */
   height: 100%; /* Ensure it takes the full height of the navbar */
+}
+
+.logout-text {
+  color: rgb(185, 9, 9);
 }
 
 /* Additional styles for links, icons, etc., remain as is */

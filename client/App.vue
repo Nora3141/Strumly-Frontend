@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import SearchBar from "@/components/Home/SearchBar.vue";
+import router from "@/router";
 import { useToastStore } from "@/stores/toast";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
@@ -11,6 +13,7 @@ const userStore = useUserStore();
 const { isLoggedIn } = storeToRefs(userStore);
 const { toast } = storeToRefs(useToastStore());
 const dropdownVisibile = ref(false);
+let searchQuery = ref("");
 
 // Make sure to update the session before mounting the app in case the user is already logged in
 onBeforeMount(async () => {
@@ -24,63 +27,68 @@ onBeforeMount(async () => {
 function toggleUserDropdown() {
   dropdownVisibile.value = !dropdownVisibile.value;
 }
+
+function enterSearch() {
+  console.log("entering search!!");
+  void router.push({ name: "Search", query: { searchQuery: String(searchQuery.value) } });
+}
+
+async function logout() {
+  await userStore.logoutUser();
+  void router.push({ name: "Home" });
+}
 </script>
 
 <template>
   <main class="background-blank-full">
     <header>
       <nav class="navbar navbar-expand-lg orange-background">
-        <RouterLink class="navbar-brand" :to="{ name: 'Home' }">
-          <p class="mclaren-regular strumly-text">strumly</p>
-        </RouterLink>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="navbar-content">
+          <!-- Left: Brand -->
+          <RouterLink class="navbar-brand" :to="{ name: 'Home' }">
+            <p class="mclaren-regular strumly-text">strumly</p>
+          </RouterLink>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Home' }" :class="{ active: currentRouteName === 'Home' }">
-                <img class="navbar-icon" src="@/assets/images/home.png" /> Home
-              </RouterLink>
-            </li>
-            <li class="nav-item">
-              <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Create' }" :class="{ active: currentRouteName === 'Create' }">
-                <img class="navbar-icon" src="@/assets/images/plus.png" /> Create
-              </RouterLink>
-            </li>
-            <li class="nav-item">
-              <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Feed' }" :class="{ active: currentRouteName === 'Feed' }">
-                <img class="navbar-icon" src="@/assets/images/video.png" /> Feed
-              </RouterLink>
-            </li>
-            <li v-if="isLoggedIn" class="nav-item dropdown">
-              <span class="nav-link dropdown-toggle" @click="toggleUserDropdown" aria-haspopup="true" aria-expanded="false"> <img class="navbar-icon" src="@/assets/images/user.png" /> User </span>
-              <div v-if="dropdownVisibile" class="dropdown-menu show">
-                <RouterLink class="dropdown-item" :to="{ name: 'Settings' }">Settings</RouterLink>
-                <RouterLink class="dropdown-item" :to="{ name: 'Profile' }">Profile</RouterLink>
-              </div>
-            </li>
-            <li v-else class="nav-item">
-              <RouterLink class="nav-link d-flex align-items-center" :to="{ name: 'Login' }" :class="{ active: currentRouteName === 'Login' }"> Login </RouterLink>
-            </li>
-          </ul>
-          <!--
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      -->
+          <!-- Center: Search Bar -->
+          <div class="navbar-center">
+            <SearchBar />
+          </div>
+
+          <!-- Right: Links and Dropdown -->
+          <div class="navbar-right">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <RouterLink class="nav-link d-flex align-items-center khula-regular" :to="{ name: 'Home' }" :class="{ active: currentRouteName === 'Home' }">
+                  <img class="navbar-icon" src="@/assets/images/home.png" /> Home
+                </RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link d-flex align-items-center khula-regular" :to="{ name: 'Create' }" :class="{ active: currentRouteName === 'Create' }">
+                  <img class="navbar-icon" src="@/assets/images/plus.png" /> Create
+                </RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link d-flex align-items-center khula-regular" :to="{ name: 'Feed' }" :class="{ active: currentRouteName === 'Feed' }">
+                  <img class="navbar-icon" src="@/assets/images/video.png" /> Feed
+                </RouterLink>
+              </li>
+              <li v-if="isLoggedIn" class="nav-item dropdown khula-regular">
+                <span class="nav-link dropdown-toggle" @click="toggleUserDropdown" aria-haspopup="true" aria-expanded="false"> <img class="navbar-icon" src="@/assets/images/user.png" /> User </span>
+                <div v-if="dropdownVisibile" class="dropdown-menu show">
+                  <RouterLink class="dropdown-item" :to="{ name: 'Settings' }">Settings</RouterLink>
+                  <RouterLink class="dropdown-item" :to="{ name: 'Profile' }">Profile</RouterLink>
+                  <div class="dropdown-divider"></div>
+                  <button class="dropdown-item" @click="logout">Logout</button>
+                </div>
+              </li>
+              <li v-else class="nav-item">
+                <RouterLink class="nav-link d-flex align-items-center khula-regular" :to="{ name: 'Login' }" :class="{ active: currentRouteName === 'Login' }"> Login </RouterLink>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
+
       <article v-if="toast !== null" class="toast" :class="toast.style">
         <p>{{ toast.message }}</p>
       </article>
@@ -98,6 +106,7 @@ nav {
   display: flex;
   align-items: center;
   height: 60px;
+  justify-items: space-between;
 }
 
 h1 {
@@ -128,7 +137,6 @@ a {
 
 ul {
   list-style-type: none;
-  margin-left: auto;
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -182,4 +190,47 @@ ul {
 .dropdown-menu.show {
   display: block; /* Show the dropdown when the flag is set */
 }
+
+.dropdown-item {
+  font-size: 16px; /* Set the font size to match all items */
+}
+
+.navbar-right-content {
+  width: fit-content;
+}
+
+.navbar {
+  padding: 1em 2em;
+  background-color: #f4bc73;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* This centers items vertically */
+  width: 100%;
+  height: 60px; /* Make sure this matches the navbar height */
+}
+
+.navbar-center {
+  flex: 1; /* Allows the search bar to center horizontally */
+  display: flex;
+  justify-content: center;
+  align-items: center; /* This centers the search bar vertically */
+  height: 100%; /* Ensure the search bar takes full height */
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1em; /* Space between items in the right section */
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center; /* Centers the "strumly" logo vertically */
+  height: 100%; /* Ensure it takes the full height of the navbar */
+}
+
+/* Additional styles for links, icons, etc., remain as is */
 </style>

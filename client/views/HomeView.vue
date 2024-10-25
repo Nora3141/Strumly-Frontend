@@ -42,6 +42,10 @@ function enterSearch() {
   void router.push({ name: "Search", query: { searchQuery: String(searchQuery.value) } });
 }
 
+function goToLogin() {
+  void router.push({ name: "Login" });
+}
+
 onBeforeMount(async () => {
   document.body.classList.add("no-scroll");
   await getTrendingPosts(8);
@@ -53,15 +57,16 @@ onBeforeMount(async () => {
   <main class="background-blank-whole whole-page no-scroll">
     <div class="container column">
       <h1 class="page-title mclaren-regular">Welcome to Strumly!</h1>
-      <p class="khula-light">Get started by searching for a song or checking out some of the trending posts</p>
-      <div class="search-container">
-        <div class="input-group mb-3">
-          <span class="input-group-text">
-            <i class="bi bi-search"></i>
-          </span>
-          <input v-model="searchQuery" type="text" placeholder="Cool Song" class="form-control search-bar" @keydown.enter="enterSearch" />
+      <div v-if="!isLoggedIn" class="top-section">
+        <div class="alert alert-warning d-flex align-items-top khula-light" role="alert">
+          <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.25rem; margin-right: 10px"></i>
+          <div>
+            <p>We noticed you're not logged in! Log in to be able to create and act on posts.</p>
+          </div>
         </div>
+        <button class="khula-regular login-button" @click="goToLogin">Login or Register</button>
       </div>
+      <p v-else class="khula-light">Get started by searching for a song or checking out some of the trending posts</p>
       <TrendingBox class="trending-box" :sectionTitle="'Trending Posts'" :posts="trendingPosts" />
       <TrendingBox class="trending-box" :sectionTitle="'Getting Remixed in the Community'" :posts="trendingRemixedPosts" />
     </div>
@@ -104,5 +109,24 @@ h2 {
 
 .search-results li:hover {
   background-color: #f0f0f0;
+}
+
+.login-button {
+  border-radius: 20px;
+  background-color: #4fa037;
+  color: white;
+  padding: 10px;
+  font-size: 1.3em;
+  width: fit-content;
+}
+
+.login-button:hover {
+  background-color: #408b29;
+}
+
+.top-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

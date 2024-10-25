@@ -29,7 +29,12 @@ p {
   font-size: 1.2em;
   margin-top: 10px;
   margin-left: 10px;
+  width: 230px; /* Matches the width of the image */
+  white-space: nowrap; /* Prevents wrapping to the next line */
+  overflow: hidden; /* Ensures the overflowing text is not shown */
+  text-overflow: ellipsis; /* Adds '...' to the truncated text */
 }
+
 .subtext-author {
   margin-top: -5px;
   margin-left: 10px;
@@ -41,12 +46,13 @@ p {
   height: 150px;
   object-fit: cover;
 }
+
 .content {
   width: fit-content;
 }
 
 .clickable-div {
   cursor: pointer; /* Changes the cursor to a pointer */
-  width: fit-content;
+  width: 230px;
 }
 </style>

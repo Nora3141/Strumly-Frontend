@@ -6,6 +6,7 @@ import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
 const videoURL = ref("");
+const thumbnailURL = ref("");
 const videoTitle = ref("");
 const videoDescription = ref("");
 const originalArtist = ref("");
@@ -44,16 +45,17 @@ const formatGoogleDriveURLForIframe = (url: string): string => {
 
 const createPost = async () => {
   const url = formatGoogleDriveURLForIframe(videoURL.value);
+  const thumbnail = thumbnailURL.value ? thumbnailURL.value : "";
   try {
     if (props.originalPost === "") {
       await fetchy("/api/posts", "POST", {
-        body: { videoURL: url, videoTitle: videoTitle.value, videoDescription: videoDescription.value, originalArtist: originalArtist.value },
+        body: { videoURL: url, thumbnailURL: thumbnail, videoTitle: videoTitle.value, videoDescription: videoDescription.value, originalArtist: originalArtist.value },
         alert: true,
       });
     } else {
       console.log("in the else statement creating a remix");
       await fetchy("/api/remixing/createRemix", "POST", {
-        body: { originalPostID: props.originalPost, videoURL: url, videoTitle: videoTitle.value, videoDescription: videoDescription.value },
+        body: { originalPostID: props.originalPost, videoURL: url, thumbnailURL: thumbnail, videoTitle: videoTitle.value, videoDescription: videoDescription.value },
         alert: true,
       });
     }
@@ -110,6 +112,21 @@ const emptyForm = () => {
 
       <!-- Right Column -->
       <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h4>
+              <i class="bi bi-file-earmark-text me-2"></i>
+              Add Thumbnail (optional)
+            </h4>
+            <p>Add an <a href="https://images.google.com/" target="_blank">image</a> to be the thumbnail of your post.</p>
+            <div class="d-flex align-items-center text-muted mb-2">
+              <i class="bi bi-exclamation-circle me-2"></i>
+              <p class="mb-0">Note: This should not be a Google Drive URL</p>
+            </div>
+            <textarea id="videoDescription" v-model="thumbnailURL" class="form-control mt-2 required-field" placeholder="Image URL here"></textarea>
+          </div>
+        </div>
+
         <!-- Step 3 -->
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
@@ -127,7 +144,7 @@ const emptyForm = () => {
           <div class="card-body">
             <h4>
               <i class="bi bi-person me-2"></i>
-              Credit Others
+              Credit Others (optional)
             </h4>
             <textarea id="originalArtist" v-model="originalArtist" class="form-control mt-2" placeholder="Original artist of song here"></textarea>
           </div>

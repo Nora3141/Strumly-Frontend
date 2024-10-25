@@ -3,7 +3,16 @@ import router from "@/router";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
+import { computed } from "vue";
 const props = defineProps(["post"]);
+
+const placeholderImage = new URL("@/assets/images/placeholder-thumbnail.jpg", import.meta.url).href;
+const thumbnailSrc = computed(() => {
+  if (!props.post || !props.post.thumbnailURL) {
+    return placeholderImage; // Safeguard against undefined post or empty thumbnail URL
+  }
+  return props.post.thumbnailURL;
+});
 
 function goToPost() {
   void router.push({ name: "Feed", query: { specificPost: String(props.post._id) } });
@@ -13,7 +22,7 @@ function goToPost() {
 <template>
   <div @click="goToPost" class="clickable-div">
     <article class="container-fluid row">
-      <img class="thumbnail-image img-fluid" src="@/assets/images/placeholder-thumbnail.jpg" />
+      <img class="thumbnail-image img-fluid" :src="thumbnailSrc" />
       <p class="subtext-title khula-bold">{{ props.post.videoTitle }}</p>
       <p class="subtext-author khula-light">by {{ props.post.author }}</p>
     </article>

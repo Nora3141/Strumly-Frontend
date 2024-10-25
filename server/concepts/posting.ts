@@ -10,6 +10,7 @@ export interface PostOptions {
 export interface PostDoc extends BaseDoc {
   author: ObjectId;
   videoURL: string;
+  thumbnailURL: string;
   videoTitle: string;
   videoDescription: string;
   originalArtist?: string;
@@ -29,8 +30,8 @@ export default class PostingConcept {
     this.posts = new DocCollection<PostDoc>(collectionName);
   }
 
-  async create(author: ObjectId, videoURL: string, videoTitle: string, videoDescription: string, originalArtist?: string, options?: PostOptions) {
-    const _id = await this.posts.createOne({ author, videoURL, videoTitle, videoDescription, originalArtist, options });
+  async create(author: ObjectId, videoURL: string, videoTitle: string, thumbnailURL: string, videoDescription: string, originalArtist?: string, options?: PostOptions) {
+    const _id = await this.posts.createOne({ author, videoURL, thumbnailURL, videoTitle, videoDescription, originalArtist, options });
     return { msg: "Post successfully created!", post: await this.posts.readOne({ _id }) };
   }
 

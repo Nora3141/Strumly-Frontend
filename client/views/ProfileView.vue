@@ -86,11 +86,14 @@ function previousPage() {
   <main class="column">
     <img src="@/assets/images/profile-icon.png" width="100px" />
     <h2>{{ currentUsername.toUpperCase() }}</h2>
-    <h2>My Posts:</h2>
-    <PagingPostList :myPosts="myPosts" />
-
-    <h2>My Favorited Posts:</h2>
-    <PagingPostList :myPosts="favoritedPosts" />
+    <div class="profile-section">
+      <h4 class="khula-regular">My Posts:</h4>
+      <PagingPostList :myPosts="myPosts" />
+    </div>
+    <div class="profile-section">
+      <h4 class="khula-regular">My Favorited Posts:</h4>
+      <PagingPostList :myPosts="favoritedPosts" />
+    </div>
   </main>
 </template>
 
@@ -106,5 +109,16 @@ function previousPage() {
 
 .posts-section-wrapper {
   width: 60vw;
+}
+
+.profile-section {
+  background: white;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid gray;
+}
+
+h4 {
+  margin: 5px;
 }
 </style>

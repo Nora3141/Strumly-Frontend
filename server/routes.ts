@@ -95,9 +95,9 @@ class Routes {
   }
 
   @Router.post("/posts")
-  async createPost(session: SessionDoc, videoURL: string, videoTitle: string, videoDescription: string, originalArtist?: string, options?: PostOptions) {
+  async createPost(session: SessionDoc, videoURL: string, thumbnailURL: string, videoTitle: string, videoDescription: string, originalArtist?: string, options?: PostOptions) {
     const user = Sessioning.getUser(session);
-    const created = await Posting.create(user, videoURL, videoTitle, videoDescription, originalArtist, options);
+    const created = await Posting.create(user, videoURL, videoTitle, thumbnailURL, videoDescription, originalArtist, options);
     return { msg: created.msg, post: await Responses.post(created.post) };
   }
 
@@ -380,7 +380,7 @@ class Routes {
    * @returns the newly created post
    */
   @Router.post("/remixing/createRemix")
-  async createRemix(originalPostID: string, session: SessionDoc, videoURL: string, videoTitle: string, videoDescription: string, originalArtist?: string, options?: PostOptions) {
+  async createRemix(originalPostID: string, session: SessionDoc, videoURL: string, thumbnailURL: string, videoTitle: string, videoDescription: string, originalArtist?: string, options?: PostOptions) {
     // assert that the original post exists
     console.log("creating a remix from post id: ", originalPostID);
     const oid = new ObjectId(originalPostID);
@@ -390,7 +390,7 @@ class Routes {
     // assert that the user is logged in
     Sessioning.isLoggedIn(session);
     const user = Sessioning.getUser(session);
-    const created = await Posting.create(user, videoURL, videoTitle, videoDescription, foundArtist, options);
+    const created = await Posting.create(user, videoURL, thumbnailURL, videoTitle, videoDescription, foundArtist, options);
     if (!created.post) throw new Error("Could not create post as a remix.");
     await Remixing.createRemix(new ObjectId(originalPostID), created.post._id);
     return { msg: "Created as a remix: " + created.msg, post: await Responses.post(created.post) };

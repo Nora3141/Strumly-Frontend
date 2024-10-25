@@ -16,7 +16,7 @@ const emit = defineEmits(["editPost", "refreshPosts"]);
 const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 let numFavorites = ref(0);
 let numRemixes = ref(0);
-let tagNames = ref([]);
+let tagNames = ref<string[]>([]);
 let infoShowing = ref(false);
 const tagStringToAdd = ref("");
 

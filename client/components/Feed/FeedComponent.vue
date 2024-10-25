@@ -11,7 +11,7 @@ const props = defineProps(["specificPostID"]);
 const loaded = ref(false);
 let posts = ref<Array<Record<string, string>>>([]);
 let tagsActivationStatus = ref<boolean[]>([false, false, false, false, false, false, false]);
-let ALL_TAGS = ["Guitar", "Piano", "Voice", "Drums", "Beginner", "Intermediate", "Advanced"];
+let ALL_TAGS = ["Guitar", "Piano", "Voice", "Drums", "Easy", "Medium", "Hard"];
 let includedTags = ref<string[]>([]);
 
 async function getRandomPost() {
@@ -102,7 +102,7 @@ onBeforeMount(async () => {
     </section>
     <p v-else-if="loaded">No posts found</p>
     <p v-else>Loading...</p>
-    <button class="nextPostButton" @click="getRandomPost">+</button>
+    <button class="nextPostButton" @click="getRandomPost">Next ▼</button>
   </div>
 </template>
 
@@ -123,8 +123,15 @@ article {
   padding: 5px;
 }
 .nextPostButton {
-  border-radius: 100%;
+  border-radius: 20px;
   margin: 5px;
+  background-color: rgb(81, 184, 81);
+  border: none;
+  padding: 10px;
+}
+
+.nextPostButton:hover {
+  background-color: rgb(52, 116, 52);
 }
 
 .posts {

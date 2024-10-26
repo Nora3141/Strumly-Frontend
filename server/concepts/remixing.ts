@@ -42,7 +42,7 @@ export default class RemixingConcept {
 
   async getMostRemixed(postIDs: ObjectId[], numToGet: number) {
     console.log("get most remixed called on: ", postIDs);
-    if (postIDs.length <= numToGet) return postIDs;
+    // if (postIDs.length <= numToGet) return postIDs;
 
     console.log("mapping...");
     const mapped = await Promise.all(
@@ -57,7 +57,9 @@ export default class RemixingConcept {
 
     const result = [];
     for (let i = 0; i < numToGet && i < mapped.length; i++) {
-      result.push(mapped[i].id);
+      if (mapped[i].count > 0) {
+        result.push(mapped[i].id);
+      }
     }
     return result;
   }

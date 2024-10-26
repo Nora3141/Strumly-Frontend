@@ -47,8 +47,8 @@ function goToLogin() {
 }
 
 onBeforeMount(async () => {
-  await getTrendingPosts(8);
-  await getTrendingRemixedPosts(8);
+  await getTrendingPosts(6);
+  await getTrendingRemixedPosts(6);
 });
 </script>
 

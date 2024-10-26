@@ -14,6 +14,11 @@ import { z } from "zod";
  */
 class Routes {
   // Synchronize the concepts from `app.ts`.
+  @Router.get("/assertLoggedIn")
+  async checkLoggedIn(session: SessionDoc) {
+    Sessioning.isLoggedIn(session);
+    return { msg: "Creating a remix!" };
+  }
 
   @Router.get("/session")
   async getSessionUser(session: SessionDoc) {

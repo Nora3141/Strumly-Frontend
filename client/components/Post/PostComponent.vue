@@ -81,7 +81,12 @@ const removeTagOnPost = async (tagToDeleteName: string) => {
   await getTagsOnPost();
 };
 
-function remixPost() {
+async function remixPost() {
+  try {
+    await fetchy(`/api/assertLoggedIn`, "GET", {});
+  } catch (error) {
+    console.log("An error occurred checking if logged in: ", error);
+  }
   void router.push({ name: "Create", query: { originalPost: String(props.post._id), originalPostName: String(props.post.videoTitle) } });
 }
 
@@ -123,7 +128,7 @@ onBeforeMount(async () => {
 
         <div class="base">
           <div class="action-part">
-            <FavoriteComponent v-if="isLoggedIn" :post="post" @refreshFavCount="getFavoritesOnPost" />
+            <FavoriteComponent :post="post" @refreshFavCount="getFavoritesOnPost" />
             <p class="khula-regular">(x {{ numFavorites }} )</p>
           </div>
           <div class="action-part">

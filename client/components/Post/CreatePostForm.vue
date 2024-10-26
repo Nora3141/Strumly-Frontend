@@ -89,6 +89,7 @@ const emptyForm = () => {
               Record Video
             </h4>
             <p>Record a video of your music and upload it to Google Drive.</p>
+            <p v-if="props.originalPost">To create this post as a remix, play the original post in the background of your recording.</p>
             <div class="d-flex align-items-center text-muted mb-2">
               <i class="bi bi-exclamation-circle me-2"></i>
               <p class="mb-0">Note: Make sure your link is publicly accessible!</p>
@@ -116,7 +117,7 @@ const emptyForm = () => {
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
             <h4>
-              <i class="bi bi-file-earmark-text me-2"></i>
+              <i class="bi bi-image me-2"></i>
               Add Thumbnail (optional)
             </h4>
             <p>Add an <a href="https://images.google.com/" target="_blank">image</a> to be the thumbnail of your post.</p>
@@ -141,7 +142,7 @@ const emptyForm = () => {
         </div>
 
         <!-- Step 4 -->
-        <div class="card mb-4 shadow-sm">
+        <div v-if="!props.originalPost" class="card mb-4 shadow-sm">
           <div class="card-body">
             <h4>
               <i class="bi bi-person me-2"></i>

@@ -386,11 +386,11 @@ class Routes {
     const oid = new ObjectId(originalPostID);
     await Posting.assertPostExists(oid);
     const originalPost = (await Posting.getByID([oid]))[0];
-    const foundArtist = originalPost.originalArtist;
+    const foundArtist = originalPost.originalArtist + "\nremixing from post author: " + (await Authing.getUserById(originalPost.author)).username;
     // assert that the user is logged in
     Sessioning.isLoggedIn(session);
     const user = Sessioning.getUser(session);
-    const created = await Posting.create(user, videoURL, thumbnailURL, videoTitle, videoDescription, foundArtist, options);
+    const created = await Posting.create(user, videoURL, videoTitle, thumbnailURL, videoDescription, foundArtist, options);
     if (!created.post) throw new Error("Could not create post as a remix.");
     await Remixing.createRemix(new ObjectId(originalPostID), created.post._id);
     return { msg: "Created as a remix: " + created.msg, post: await Responses.post(created.post) };

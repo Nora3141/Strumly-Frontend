@@ -117,7 +117,7 @@ onBeforeMount(async () => {
             <button @click="toggleInfoShowing" class="btn"><i class="bi bi-info-circle"></i></button>
           </div>
           <div class="video-container">
-            <iframe :src="props.post.videoURL" width="315" height="560" allowfullscreen frameborder="0"></iframe>
+            <iframe :src="props.post.videoURL" width="390" height="470" allowfullscreen frameborder="0"></iframe>
           </div>
         </article>
 
@@ -134,7 +134,7 @@ onBeforeMount(async () => {
       </div>
       <div v-if="infoShowing" class="info-wrapper">
         <h4 class="info-section-header khula-bold">About this post:</h4>
-        <p class="khula-regular">{{ props.post.videoDescription }}</p>
+        <p class="khula-regular info-about-section">{{ props.post.videoDescription }}</p>
         <hr />
         <h4 v-if="props.post.originalArtist" class="info-section-header khula-bold">Original Artist:</h4>
         <p v-if="props.post.originalArtist" class="khula-regular">{{ props.post.originalArtist }}</p>
@@ -142,7 +142,7 @@ onBeforeMount(async () => {
         <h4 class="info-section-header khula-bold">Tags:</h4>
         <div class="tagsList tags-grid">
           <article v-for="tagName in tagNames" :key="tagName">
-            <TagComponent :tagName="tagName" @removeTagFromPost="removeTagOnPost(tagName)" />
+            <TagComponent :tagName="tagName" :postAuthor="props.post.author" @removeTagFromPost="removeTagOnPost(tagName)" />
           </article>
         </div>
         <div v-if="props.post.author == currentUsername" class="add-tags-grid khula-regular">
@@ -172,8 +172,8 @@ onBeforeMount(async () => {
 <style scoped>
 .video-container {
   /* Set the dimensions for the cropped video */
-  width: 500px; /* or a specific width, e.g., 500px */
-  height: 600px; /* Custom height you want for cropping */
+  width: 400px; /* or a specific width, e.g., 500px */
+  height: 480px; /* Custom height you want for cropping */
 
   position: relative;
   overflow: hidden;
@@ -182,8 +182,8 @@ onBeforeMount(async () => {
 .video-container iframe {
   /* Maintain the aspect ratio of the video, but stretch it to fill the container */
   position: absolute;
-  width: 500px;
-  height: 600px; /* Increase the height to zoom in and crop */
+  width: 400px;
+  height: 480px; /* Increase the height to zoom in and crop */
 }
 .post-component-wrapper {
   border: 1px solid black;
@@ -218,6 +218,9 @@ onBeforeMount(async () => {
 
 .title {
   padding: 10px;
+  max-width: 250px; /* Set your desired fixed width here */
+  white-space: normal; /* Allows text to wrap onto the next line */
+  overflow-wrap: break-word; /* Ensures long words will break and wrap onto the next line */
 }
 
 menu {
@@ -278,6 +281,9 @@ menu {
   border: 1px solid gray;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+  width: 300px;
+  height: 480; /* Set the maximum height as desired */
+  overflow-y: auto;
 }
 
 .info-section-header {
@@ -300,6 +306,7 @@ p {
 }
 
 .add-tags-grid {
+  margin-top: 30px;
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
 }
@@ -312,5 +319,11 @@ p {
   margin: 5px;
   position: relative;
   border: none;
+}
+
+.info-about-section {
+  width: 280px;
+  margin-left: 10px;
+  text-align: left;
 }
 </style>

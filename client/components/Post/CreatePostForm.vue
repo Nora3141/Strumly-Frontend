@@ -72,6 +72,7 @@ const emptyForm = () => {
   videoTitle.value = "";
   videoDescription.value = "";
   originalArtist.value = "";
+  thumbnailURL.value = "";
 };
 </script>
 
@@ -123,7 +124,7 @@ const emptyForm = () => {
               <i class="bi bi-exclamation-circle me-2"></i>
               <p class="mb-0">Note: This should not be a Google Drive URL</p>
             </div>
-            <textarea id="videoDescription" v-model="thumbnailURL" class="form-control mt-2 required-field" placeholder="Image URL here"></textarea>
+            <textarea id="videoThumbnail" v-model="thumbnailURL" class="form-control mt-2 required-field" placeholder="Image URL here"></textarea>
           </div>
         </div>
 

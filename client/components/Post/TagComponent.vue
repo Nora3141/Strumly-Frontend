@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 const emit = defineEmits(["removeTagFromPost"]);
-const props = defineProps(["tagName"]);
+const props = defineProps(["tagName", "postAuthor"]);
+const { currentUsername } = storeToRefs(useUserStore());
 
 function removeTag() {
   emit("removeTagFromPost");
@@ -10,7 +13,7 @@ function removeTag() {
 <template>
   <div class="tag-container">
     <p class="tagName">{{ props.tagName }}</p>
-    <button class="close-btn" @click="removeTag">×</button>
+    <button v-if="props.postAuthor == currentUsername" class="close-btn" @click="removeTag">×</button>
   </div>
 </template>
 

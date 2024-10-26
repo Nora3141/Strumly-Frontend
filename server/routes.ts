@@ -216,7 +216,10 @@ class Routes {
    */
   @Router.get("/favoriting/checkFavorited/:postID")
   async isFavorited(postID: string, session: SessionDoc) {
-    Sessioning.isLoggedIn(session);
+    const lin = Sessioning.checkLoggedIn(session);
+    if (!lin) {
+      return { result: false };
+    }
     const oid = new ObjectId(postID);
     await Posting.assertPostExists(oid);
 

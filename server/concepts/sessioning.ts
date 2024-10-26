@@ -38,6 +38,13 @@ export default class SessioningConcept {
     }
   }
 
+  checkLoggedIn(session: SessionDoc) {
+    if (session.user === undefined) {
+      return false;
+    }
+    return true;
+  }
+
   isLoggedOut(session: SessionDoc) {
     if (session.user !== undefined) {
       throw new NotAllowedError("Must be logged out!");

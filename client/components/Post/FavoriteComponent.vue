@@ -7,6 +7,7 @@ const emit = defineEmits(["refreshFavCount"]);
 let favorited = ref(false);
 
 const toggleFavorite = async () => {
+  console.log("toggling favorite;");
   try {
     await fetchy(`/api/favoriting/toggleFavorite/${props.post._id}`, "POST");
   } catch {

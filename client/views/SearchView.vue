@@ -30,6 +30,7 @@ onBeforeMount(async () => {
   <main class="background-blank-whole">
     <h1 class="khula-bold page-title">Search Results For: "{{ searchQuery }}"</h1>
     <p v-if="!loaded">Loading...</p>
+    <p v-if="posts.length == 0">No posts found.</p>
     <section class="posts row justify-content-center mx-auto posts-section" v-if="loaded && posts.length !== 0" style="max-width: 50%">
       <article class="col-12 col-sm-6 col-md-4" v-for="post in posts" :key="post._id" style="padding: 10px">
         <PostThumbnail :post="post" />

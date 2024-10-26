@@ -57,7 +57,7 @@ onBeforeMount(async () => {
     <div class="container column">
       <h1 class="page-title mclaren-regular">Welcome to Strumly!</h1>
       <div v-if="!isLoggedIn" class="top-section">
-        <div class="alert alert-warning d-flex align-items-top khula-light" role="alert">
+        <div class="lower-z alert alert-warning d-flex align-items-top khula-light" role="alert">
           <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.25rem; margin-right: 10px"></i>
           <div>
             <p>We noticed you're not logged in! Log in to be able to create and act on posts.</p>
@@ -73,16 +73,15 @@ onBeforeMount(async () => {
 </template>
 
 <style scoped>
+.lower-z {
+  z-index: 1;
+}
 .page-title {
-  margin-top: 40px;
+  margin-top: 80px;
 }
 h1,
 h2 {
   text-align: center;
-}
-
-.whole-page {
-  height: 100vh;
 }
 
 .search-container {

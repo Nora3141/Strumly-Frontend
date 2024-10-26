@@ -91,9 +91,7 @@ async function logout() {
         </div>
       </nav>
 
-      <article v-if="toast !== null" class="toast" :class="toast.style">
-        <p>{{ toast.message }}</p>
-      </article>
+      <p :class="['my-toast-class', toast.style]" v-if="toast">{{ toast ? toast.message : "no message here" }}</p>
     </header>
     <RouterView />
   </main>
@@ -102,6 +100,12 @@ async function logout() {
 <style scoped>
 @import "./assets/toast.css";
 
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 nav {
   padding: 1em 2em;
   background-color: #f4bc73;
@@ -202,8 +206,13 @@ ul {
 }
 
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   padding: 1em 2em;
   background-color: #f4bc73;
+  z-index: 100;
 }
 
 .navbar-content {
@@ -236,6 +245,27 @@ ul {
 
 .logout-text {
   color: rgb(185, 9, 9);
+}
+
+.my-toast-class {
+  position: fixed;
+  top: 1em;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 0.5em 1em;
+  border-radius: 6px;
+  max-width: 60em;
+  margin: 0 auto;
+
+  color: #fff;
+  z-index: 1000;
+}
+
+.error {
+  background-color: #fa5252;
+}
+.success {
+  background-color: #40c057;
 }
 
 /* Additional styles for links, icons, etc., remain as is */

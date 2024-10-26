@@ -4,7 +4,7 @@ import router from "@/router";
 import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
-import { computed, onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 
 const { currentUsername, currentUserID } = storeToRefs(useUserStore());
 const { logoutUser, deleteUser } = useUserStore();
@@ -54,37 +54,11 @@ onBeforeMount(async () => {
   await getPosts(currentUsername.value);
   loaded.value = true;
 });
-
-// Pagination logic
-const paginatedPosts = computed(() => {
-  const start = (myPostsPageNum.value - 1) * postsPerPage;
-  return myPosts.value.slice(start, start + postsPerPage);
-});
-
-const hasNextPage = computed(() => {
-  return myPostsPageNum.value * postsPerPage < myPosts.value.length;
-});
-
-function nextPage() {
-  if (hasNextPage.value) {
-    myPostsPageNum.value++;
-  }
-}
-
-const hasPreviousPage = computed(() => {
-  return myPostsPageNum.value > 1;
-});
-
-function previousPage() {
-  if (myPostsPageNum.value > 1) {
-    myPostsPageNum.value--;
-  }
-}
 </script>
 
 <template>
   <main class="column">
-    <img src="@/assets/images/profile-icon.png" width="100px" />
+    <img src="@/assets/images/profile-icon.png" width="200px" class="first-page-item" />
     <h2>{{ currentUsername.toUpperCase() }}</h2>
     <div class="profile-section">
       <h4 class="khula-regular">My Posts:</h4>
@@ -98,6 +72,9 @@ function previousPage() {
 </template>
 
 <style scoped>
+.first-page-item {
+  padding-top: 80px;
+}
 .my-posts-section {
   display: flex;
   flex-direction: row;

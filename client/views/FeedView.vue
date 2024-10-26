@@ -30,4 +30,8 @@ h3,
 p {
   text-align: center;
 }
+
+h1 {
+  padding-top: 80px;
+}
 </style>

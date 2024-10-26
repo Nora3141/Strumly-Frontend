@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import router from "@/router";
+import { useToastStore } from "@/stores/toast";
 import { useUserStore } from "@/stores/user";
 import { ref } from "vue";
 
@@ -12,7 +13,7 @@ async function login() {
   void updateSession();
   console.log("about to send to home...");
   void router.push({ name: "Home" });
-  console.log("sent to home");
+  useToastStore().showToast({ message: "Logged in successfully!", style: "success" });
 }
 </script>
 

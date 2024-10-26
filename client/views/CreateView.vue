@@ -55,6 +55,10 @@ p {
   margin: 10px;
 }
 
+h1 {
+  padding-top: 80px;
+}
+
 .createPostContainer {
   width: 50vw;
   margin-top: 20px;

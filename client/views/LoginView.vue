@@ -16,7 +16,7 @@ import RegisterForm from "@/components/Login/RegisterForm.vue";
 <style scoped>
 h1 {
   text-align: center;
-  margin-top: 50px;
+  padding-top: 80px;
   margin-bottom: 50px;
 }
 .login-section {

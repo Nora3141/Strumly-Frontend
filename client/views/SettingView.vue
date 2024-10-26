@@ -56,9 +56,15 @@ onBeforeMount(async () => {
 
 <template>
   <main class="column">
-    <h1>User Settings</h1>
+    <h1>Settings for {{ currentUsername }}</h1>
     <button class="pure-button pure-button-primary" @click="logout">Logout</button>
     <button class="button-error pure-button" @click="delete_">Delete User</button>
     <UpdateUserForm />
   </main>
 </template>
+
+<style scoped>
+h1 {
+  padding-top: 80px;
+}
+</style>

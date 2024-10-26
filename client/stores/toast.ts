@@ -18,6 +18,7 @@ export const useToastStore = defineStore(
     };
 
     const hideToast = () => {
+      console.log("hiding toast!");
       toast.value = null;
     };
 

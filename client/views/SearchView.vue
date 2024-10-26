@@ -46,6 +46,10 @@ p {
   text-align: center;
 }
 
+h1 {
+  padding-top: 80px;
+}
+
 .page-title {
   margin-top: 40px;
   margin-bottom: 40px;
